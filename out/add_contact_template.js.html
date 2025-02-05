@@ -8,7 +8,7 @@
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
     <!--[if lt IE 9]>
-      <script src="..//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
@@ -39,58 +39,57 @@
  */
 function renderNewContact(name, email, initials, id, color, phone) {
     return `
-	&lt;!-- popup -->
-        
-	&lt;div id="edit-delete-menu" class="edit-popup-container d-none">
-                &lt;div onclick="editBigView('${initials}', '${color}', '${id}', '${name}', '${email}', '${phone}' )" class="option-container">
-                    &lt;div class="option-edit">&lt;/div>&lt;span>Edit&lt;/span>&lt;/div>
-                &lt;div onclick="deleteContact('${id}')" class="option-container">
-                    &lt;div class="option-delete">&lt;/div>&lt;span>Delete&lt;/span>
-                &lt;/div>
-            &lt;/div>
-            &lt;div class="contact-container">
-                &lt;div class="contact-head">
-                    &lt;div>
-                        &lt;h1>Contacts&lt;/h1>
+	&lt;div id="window-overlay" class="d-none window-overlay">&lt;/div>
+                &lt;div class="contact-head-container"
+                    &lt;div class="contact-container">
+                        &lt;div class="contact-head">
+                            &lt;div>
+                                &lt;h1>Contacts&lt;/h1>
+                            &lt;/div>
+                            &lt;div class="arrow-position">
+                                &lt;img onclick="navigateToContactList()" class="" src="../assets/icons/blue-arrow-left.svg" alt="" />
+                            &lt;/div>
+                        &lt;/div>
+                        &lt;span class="border-left">Better with a team&lt;/span>
                     &lt;/div>
-                    &lt;div class="arrow-position">
-                        &lt;img onclick="navigateToContactList()" class="" src="../assets/icons/blue-arrow-left.svg" alt="" />
-                    &lt;/div>
-                &lt;/div>
-                &lt;span class="border-bottom">Better with a team&lt;/span>
                 &lt;div class="contact-name">
                     &lt;div id="profile-picture(${id})" class="contact-id profile-picture test-profile-picture-background" style="background-color: ${color};">
-                        &lt;span>${initials}&lt;/span>
+                        &lt;span id="userInitials">${initials}&lt;/span>
                     &lt;/div>
-                    &lt;h2>${name}&lt;/h2>
-                &lt;/div>
+                    
+                    &lt;div>
+                    &lt;h2 id="userName">${name}&lt;/h2>
+                    &lt;div class="edit-delete-wrapper" style="display: flex">
+                    &lt;div onclick="editBigView('${initials}', '${color}', '${id}', '${name}', '${email}', '${phone}')" class="option-container">
+                        &lt;div  class="option-edit">&lt;/div>&lt;span>Edit&lt;/span>
+                    &lt;/div>
+                    &lt;div onclick="deleteContact('${id}')" class="option-container">
+                        &lt;div class="option-delete">&lt;/div>&lt;span>Delete&lt;/span>
+                    &lt;/div>
+                    &lt;/div>
+                        
+                    &lt;/div>
+                    &lt;/div>
+                    
                 &lt;div class="contact-information">
                     &lt;span>Contact Information&lt;/span>
                     &lt;span class="small-span">&lt;b>Email&lt;/b>&lt;/span>
-                    &lt;a class="small-span" href="">${email}&lt;/a>
+                    &lt;a id="userEmail" class="small-span" href="#">${email}&lt;/a>
                     &lt;span class="small-span">&lt;b>Phone&lt;/b>&lt;/span>
-                    &lt;span class="small-span">${phone}&lt;/span>
+                    &lt;span id="userPhone" class="small-span">${phone}&lt;/span>
                 &lt;/div>
-                &lt;div id="option-circle" onclick="showEditDeleteMenu()" class="options-icon-container">
-                    &lt;img src="../assets/icons/options-logo.svg" alt="" />
+                &lt;div id="edit-delete-menu" class="edit-popup-container d-none">
+                &lt;div onclick="editBigView('${initials}', '${color}', '${id}', '${name}', '${email}', '${phone}')" class="option-container">
+                    &lt;div  class="option-edit">&lt;/div>&lt;span>Edit&lt;/span>
                 &lt;/div>
-            &lt;/div>
-    &lt;div class="nav-bar-main-container">
-        &lt;div class="nav-bar">
-            &lt;a href="../pages/summary.html" id="nav-bar-container-summary" class="nav-bar-container">&lt;img id="nav-bar-img-1"
-                    src="../assets/icons/summary.svg" alt="" />
-                &lt;span>Summary&lt;/span>&lt;/a>
-            &lt;a href="../pages/board.html" id="nav-bar-container-board" class="nav-bar-container">&lt;img id="nav-bar-img-2"
-                    src="../assets/icons/board.svg" alt="" />
-                &lt;span>Board&lt;/span>&lt;/a>
-            &lt;a href="../pages/add-task.html" id="nav-bar-container-add-to-task" class="nav-bar-container">&lt;img id="nav-bar-img-3"
-                    src="../assets/icons/add-to-task.svg" alt="" />
-                &lt;span>Add Task&lt;/span>&lt;/a>
-            &lt;a href="../pages/contactlist.html" id="nav-bar-container-contacts" class="nav-bar-container">&lt;img id="nav-bar-img-4"
-                    src="../assets/icons/contacts.svg" alt="" />
-                &lt;span>Contacts&lt;/span>&lt;/a>
-        &lt;/div>
-    &lt;/div>`;
+                &lt;div onclick="deleteContact('${id}')" class="option-container">
+                    &lt;div class="option-delete">&lt;/div>&lt;span>Delete&lt;/span>
+                &lt;/div>
+                &lt;/div>
+                    &lt;div id="option-circle" onclick="showEditDeleteMenu()" class="options-icon-container">
+                        &lt;img src="../assets/icons/options-logo.svg" alt="" />
+                    &lt;/div>
+            &lt;/div>`;
 }
 </code></pre>
             </article>
@@ -120,11 +119,12 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#autoLogin">autoLogin</a></li>
             <li><a href="global.html#bigTaskSlideOut">bigTaskSlideOut</a></li>
             <li><a href="global.html#capitalizeFirstLetter">capitalizeFirstLetter</a></li>
-            <li><a href="global.html#changeBgColorByUserIcons">changeBgColorByUserIcons</a></li>
             <li><a href="global.html#changeColorCardType">changeColorCardType</a></li>
             <li><a href="global.html#changePasswordVisibility">changePasswordVisibility</a></li>
             <li><a href="global.html#changeStateofCheckbox">changeStateofCheckbox</a></li>
+            <li><a href="global.html#checkAddContactInputs">checkAddContactInputs</a></li>
             <li><a href="global.html#checkContact">checkContact</a></li>
+            <li><a href="global.html#checkEditInputs">checkEditInputs</a></li>
             <li><a href="global.html#checkForGuestLogin">checkForGuestLogin</a></li>
             <li><a href="global.html#checkIfEmailExists">checkIfEmailExists</a></li>
             <li><a href="global.html#checkIfFreshLogin">checkIfFreshLogin</a></li>
@@ -134,6 +134,7 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#checkSectionForChildNodes">checkSectionForChildNodes</a></li>
             <li><a href="global.html#checkUserFolder">checkUserFolder</a></li>
             <li><a href="global.html#checkUserSearchInputAndRedirect">checkUserSearchInputAndRedirect</a></li>
+            <li><a href="global.html#checkValidation">checkValidation</a></li>
             <li><a href="global.html#clearAllInput">clearAllInput</a></li>
             <li><a href="global.html#clearAllInputAddTask">clearAllInputAddTask</a></li>
             <li><a href="global.html#clearBoard">clearBoard</a></li>
@@ -144,13 +145,18 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#closeTaskBigView">closeTaskBigView</a></li>
             <li><a href="global.html#contactBigView">contactBigView</a></li>
             <li><a href="global.html#createContact">createContact</a></li>
+            <li><a href="global.html#createNameCircle">createNameCircle</a></li>
+            <li><a href="global.html#createNewContactObject">createNewContactObject</a></li>
+            <li><a href="global.html#createNewTaskObject">createNewTaskObject</a></li>
             <li><a href="global.html#createTask">createTask</a></li>
+            <li><a href="global.html#createUserBubbles">createUserBubbles</a></li>
             <li><a href="global.html#createUserContainer">createUserContainer</a></li>
             <li><a href="global.html#deleteContact">deleteContact</a></li>
             <li><a href="global.html#deleteData">deleteData</a></li>
             <li><a href="global.html#deleteSubtask">deleteSubtask</a></li>
             <li><a href="global.html#deleteTask">deleteTask</a></li>
             <li><a href="global.html#disableFreshLogin">disableFreshLogin</a></li>
+            <li><a href="global.html#editAddContactNamesToList">editAddContactNamesToList</a></li>
             <li><a href="global.html#editAddSubTask">editAddSubTask</a></li>
             <li><a href="global.html#editBigView">editBigView</a></li>
             <li><a href="global.html#editClearSubtaskInputField">editClearSubtaskInputField</a></li>
@@ -164,6 +170,7 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#editSetUrgentPrio">editSetUrgentPrio</a></li>
             <li><a href="global.html#editShowAndHideIcons">editShowAndHideIcons</a></li>
             <li><a href="global.html#editShowContactList">editShowContactList</a></li>
+            <li><a href="global.html#editSubtask">editSubtask</a></li>
             <li><a href="global.html#editTaskGetEmployeeInfo">editTaskGetEmployeeInfo</a></li>
             <li><a href="global.html#editTaskSlideOut">editTaskSlideOut</a></li>
             <li><a href="global.html#emailExists">emailExists</a></li>
@@ -174,17 +181,20 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#filterInput">filterInput</a></li>
             <li><a href="global.html#filterInputFromArray">filterInputFromArray</a></li>
             <li><a href="global.html#findUserByKey">findUserByKey</a></li>
+            <li><a href="global.html#formatDate">formatDate</a></li>
             <li><a href="global.html#formatDateInput">formatDateInput</a></li>
             <li><a href="global.html#getAllContactsNames">getAllContactsNames</a></li>
             <li><a href="global.html#getAllTaskIdsOfUser">getAllTaskIdsOfUser</a></li>
+            <li><a href="global.html#getAllTasksFromStoredObject">getAllTasksFromStoredObject</a></li>
             <li><a
                     href="global.html#getAllTasksUsersAndContactsFromSessionStorage">getAllTasksUsersAndContactsFromSessionStorage</a>
             </li>
-            <li><a href="global.html#getAllTasksFromStoredObject">getAllTasksFromStoredObject</a></li>
             <li><a href="global.html#getArrayFromObject">getArrayFromObject</a></li>
             <li><a href="global.html#getBackToPreviousSite">getBackToPreviousSite</a></li>
             <li><a href="global.html#getChangedTaskData">getChangedTaskData</a></li>
             <li><a href="global.html#getCheckboxBg">getCheckboxBg</a></li>
+            <li><a href="global.html#getCheckedContacts">getCheckedContacts</a></li>
+            <li><a href="global.html#getColorFromArrayByName">getColorFromArrayByName</a></li>
             <li><a href="global.html#getContactFromArrayById">getContactFromArrayById</a></li>
             <li><a href="global.html#getContactInitials">getContactInitials</a></li>
             <li><a href="global.html#getCountOfAwaitFeedback">getCountOfAwaitFeedback</a></li>
@@ -195,6 +205,7 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#getCountOfToDo">getCountOfToDo</a></li>
             <li><a href="global.html#getCountOfValuesInArray">getCountOfValuesInArray</a></li>
             <li><a href="global.html#getDataFromSessionStorage">getDataFromSessionStorage</a></li>
+            <li><a href="global.html#getDropDownIcon">getDropDownIcon</a></li>
             <li><a href="global.html#getEditedUserData">getEditedUserData</a></li>
             <li><a href="global.html#getEmployeeInfo">getEmployeeInfo</a></li>
             <li><a href="global.html#getEmployeesInitials">getEmployeesInitials</a></li>
@@ -215,16 +226,28 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#getUpcomingDeadline">getUpcomingDeadline</a></li>
             <li><a href="global.html#getUserInitials">getUserInitials</a></li>
             <li><a href="global.html#getUserNameFromLocalStorage">getUserNameFromLocalStorage</a></li>
+            <li><a href="global.html#handleCountOfItemsAtAddNameCircles">handleCountOfItemsAtAddNameCircles</a></li>
             <li><a href="global.html#handleDropdownChange">handleDropdownChange</a></li>
+            <li><a
+                    href="global.html#handleEmptySubtaskTitleAtRemoveEditClass">handleEmptySubtaskTitleAtRemoveEditClass</a>
+            </li>
+            <li><a href="global.html#handleValidContactObject">handleValidContactObject</a></li>
+            <li><a
+                    href="global.html#handleValidInputAtFillPlaceHolderBubble">handleValidInputAtFillPlaceHolderBubble</a>
+            </li>
+            <li><a href="global.html#handleValidNewTask">handleValidNewTask</a></li>
             <li><a href="global.html#hideElementAndRenderAnother">hideElementAndRenderAnother</a></li>
             <li><a href="global.html#highlight">highlight</a></li>
+            <li><a href="global.html#initEditTaskElements">initEditTaskElements</a></li>
             <li><a href="global.html#initSummary">initSummary</a></li>
             <li><a href="global.html#initializeContactsList">initializeContactsList</a></li>
             <li><a href="global.html#initiateLogin">initiateLogin</a></li>
+            <li><a href="global.html#inputsFilled">inputsFilled</a></li>
             <li><a href="global.html#isDateValid">isDateValid</a></li>
             <li><a href="global.html#loadAllContacts">loadAllContacts</a></li>
             <li><a href="global.html#loadCardContactsInArray">loadCardContactsInArray</a></li>
             <li><a href="global.html#loadData">loadData</a></li>
+            <li><a href="global.html#loadPrivacyAndLegalUserInitials">loadPrivacyAndLegalUserInitials</a></li>
             <li><a href="global.html#loadRightPriorityColor">loadRightPriorityColor</a></li>
             <li><a href="global.html#loadUserInitials">loadUserInitials</a></li>
             <li><a href="global.html#moveTaskToState">moveTaskToState</a></li>
@@ -234,13 +257,18 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#navigateToSummary">navigateToSummary</a></li>
             <li><a href="global.html#onlyLoadIfUserOrGuest">onlyLoadIfUserOrGuest</a></li>
             <li><a href="global.html#openAddContactView">openAddContactView</a></li>
+            <li><a href="global.html#openDatePicker">openDatePicker</a></li>
             <li><a href="global.html#openEditTaskBigView">openEditTaskBigView</a></li>
             <li><a href="global.html#postData">postData</a></li>
+            <li><a
+                    href="global.html#prepareContactlistToGetClosedFromOutside">prepareContactlistToGetClosedFromOutside</a>
+            </li>
             <li><a href="global.html#processSignUp">processSignUp</a></li>
             <li><a href="global.html#rememberUser">rememberUser</a></li>
             <li><a href="global.html#removeEditClass">removeEditClass</a></li>
             <li><a href="global.html#removeFeedbackText">removeFeedbackText</a></li>
             <li><a href="global.html#removeHighlight">removeHighlight</a></li>
+            <li><a href="global.html#removeNotValidIfClearButtonisClicked">removeNotValidIfClearButtonisClicked</a></li>
             <li><a href="global.html#removePasswordFeedbackStyle">removePasswordFeedbackStyle</a></li>
             <li><a href="global.html#removeRotations">removeRotations</a></li>
             <li><a href="global.html#removeTaskIdFromUncheckedContacts">removeTaskIdFromUncheckedContacts</a></li>
@@ -257,6 +285,8 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#renderSubtask">renderSubtask</a></li>
             <li><a href="global.html#renderTaskBigView">renderTaskBigView</a></li>
             <li><a href="global.html#resetLoginWarning">resetLoginWarning</a></li>
+            <li><a href="global.html#resetNameCircles">resetNameCircles</a></li>
+            <li><a href="global.html#resetNotFilledResponse">resetNotFilledResponse</a></li>
             <li><a href="global.html#rotate">rotate</a></li>
             <li><a href="global.html#saveEditedUserData">saveEditedUserData</a></li>
             <li><a href="global.html#scrollStep">scrollStep</a></li>
@@ -264,7 +294,9 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#setBackendJsonToSessionStorage">setBackendJsonToSessionStorage</a></li>
             <li><a href="global.html#setChangedTaskDataToBackend">setChangedTaskDataToBackend</a></li>
             <li><a href="global.html#setColorById">setColorById</a></li>
+            <li><a href="global.html#setColorsOnceOnBoard">setColorsOnceOnBoard</a></li>
             <li><a href="global.html#setContactAssignedToChecked">setContactAssignedToChecked</a></li>
+            <li><a href="global.html#setEditedSubtaskTitleToArray">setEditedSubtaskTitleToArray</a></li>
             <li><a href="global.html#setEmailExistsFeedback">setEmailExistsFeedback</a></li>
             <li><a href="global.html#setGreetingInformations">setGreetingInformations</a></li>
             <li><a href="global.html#setGreetingName">setGreetingName</a></li>
@@ -275,13 +307,16 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#setLowPrio">setLowPrio</a></li>
             <li><a href="global.html#setMediumPrio">setMediumPrio</a></li>
             <li><a href="global.html#setNeededValues">setNeededValues</a></li>
+            <li><a href="global.html#setNewTaskStateByParamOrDefault">setNewTaskStateByParamOrDefault</a></li>
             <li><a href="global.html#setPasswordFeedbackStyle">setPasswordFeedbackStyle</a></li>
+            <li><a href="global.html#setResponseContainer">setResponseContainer</a></li>
             <li><a href="global.html#setUrgentPrio">setUrgentPrio</a></li>
             <li><a href="global.html#showAndHideIcons">showAndHideIcons</a></li>
             <li><a href="global.html#showContactList">showContactList</a></li>
             <li><a href="global.html#showEditDeleteMenu">showEditDeleteMenu</a></li>
             <li><a href="global.html#showSignUpPopUp">showSignUpPopUp</a></li>
             <li><a href="global.html#showSubmenu">showSubmenu</a></li>
+            <li><a href="global.html#showSuccessToUser">showSuccessToUser</a></li>
             <li><a href="global.html#startDragging">startDragging</a></li>
             <li><a href="global.html#startScrolling">startScrolling</a></li>
             <li><a href="global.html#statusProgressBar">statusProgressBar</a></li>
@@ -289,9 +324,14 @@ function renderNewContact(name, email, initials, id, color, phone) {
             <li><a href="global.html#stopScrolling">stopScrolling</a></li>
             <li><a href="global.html#taskBigView">taskBigView</a></li>
             <li><a href="global.html#taskCardTemplateToHtml">taskCardTemplateToHtml</a></li>
+            <li><a href="global.html#toggleClass">toggleClass</a></li>
             <li><a href="global.html#toggleClassById">toggleClassById</a></li>
             <li><a href="global.html#togglePasswordVisibilityIcon">togglePasswordVisibilityIcon</a></li>
+            <li><a href="global.html#toggleSignUpButton">toggleSignUpButton</a></li>
+            <li><a href="global.html#updateBoardAfterChanges">updateBoardAfterChanges</a></li>
             <li><a href="global.html#updateData">updateData</a></li>
+            <li><a href="global.html#updateDateField">updateDateField</a></li>
+            <li><a href="global.html#updateNameCircles">updateNameCircles</a></li>
             <li><a href="global.html#updateSessionStorage">updateSessionStorage</a></li>
             <li><a href="global.html#userLogin">userLogin</a></li>
             <li><a href="global.html#userLogout">userLogout</a></li>
@@ -305,7 +345,7 @@ function renderNewContact(name, email, initials, id, color, phone) {
     <br class="clear">
 
     <footer>
-        Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Jan 28 2025 20:51:42
+        Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Wed Feb 05 2025 13:36:03
         GMT+0100 (Mitteleuropäische Normalzeit)
     </footer>
 
