@@ -1,0 +1,127 @@
+@font-face {
+    font-family: inter;
+    src: url("../assets/fonts/Inter-VariableFont_opsz\,wght.ttf");
+}
+
+* {
+    --dark-background: #2a3647;
+    --dark-accent: #091931;
+    --light-background: #f6f7f8;
+    --light--accent: #ffffff;
+    --identity: #29abe2;
+    --light-text-color: #ffffff;
+    --dark-text-color: #000000;
+    --accent-text-color: #2a3647;
+    --prime-blue: #00bee8;
+    --icon-urgent-red: #ff3d00;
+    --icon-medium-yellow: #ffa800;
+    --icon-low-green: #7ae229;
+    --link-color: #007cee;
+}
+
+* {
+    --contact-orange: #ff7a00;
+    --contact-purple: #9327ff;
+    --contact-violet: #6e52ff;
+    --contact-pink: #9327ff;
+    --contact-yellow: #ffbb2b;
+    --contact-green: #1fd7c1;
+    --contact-darkblue: #462f8a;
+    --contact-red: #ff4646;
+    --contact-blue: #00bee8;
+}
+
+html,
+body,
+input,
+button {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: inter, sans-serif;
+    border: unset;
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body {
+    min-height: 100vh;
+    max-height: 100vh;
+}
+
+main {
+    height: calc(100vh - 160px);
+    overflow-y: auto;
+}
+
+@media (min-width: 920px) {
+    main {
+        height: 100vh;
+    }
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    background-color: var(--light-background);
+}
+
+button {
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.d-none {
+    display: none !important;
+}
+
+input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    height: 1px;
+    width: 1px;
+    display: flex;
+    z-index: 9999;
+}
+
+input[type="checkbox"] + label {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    background-size: 100%;
+    cursor: pointer;
+    flex-shrink: 0;
+    z-index: 9998;
+    background-image: url(../assets/icons/checkbox-not-checked.svg);
+}
+
+input[type="checkbox"]:checked + label {
+    height: 24px;
+    width: 24px;
+    display: inline-block;
+    background-size: 100%;
+    flex-shrink: 0;
+    background-image: url(../assets/icons/checkbox-checked.svg);
+}
+
+.not-valid {
+    border: 1px solid red !important;
+}
+
+.input-feedback-container {
+    color: red;
+    font-size: 12px;
+    font-weight: 400;
+    width: calc(100% - 42px);
+    padding-left: 21px;
+    padding-right: 21px;
+    text-align: center;
+}

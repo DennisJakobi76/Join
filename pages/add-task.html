@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/icons/join-logo-white.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/standart.css">
+    <link rel="stylesheet" href="../styles/nav-bar.css">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/add-task.css">
+    <link rel="stylesheet" href="../styles/submenu-popup.css">
+    <script src="../scripts/add_task.js" defer></script>
+    <script src="../scripts/add_task_helper_functions.js" defer></script>
+    <script src="../scripts/add_task_template.js" defer></script>
+    <script src="../scripts/main.js" defer></script>
+    <script src="../scripts/firebase.js" defer></script>
+    <script src="../scripts/contact_list.js" defer></script>
+    <script src="../scripts/standart.js" defer></script>
+    <script src="../scripts/login.js" defer></script>
+    <script src="../scripts/form_validation.js" defer></script>
+    <title>Add Task</title>
+</head>
+
+<body onload="getAllContactsNames(); setMediumPrio()">
+    <section class="main-container">
+        <div id="submenu" class="submenu-popup-container d-none">
+            <div class="submenu-text-container">
+                <a href="../pages/help.html">Help</a>
+                <a href="../pages/impressum.html">Legal Notice</a>
+                <a href="../pages/privacy-policy.html">Privacy Policy</a>
+                <a href="../pages/index.html">Log Out</a>
+            </div>
+        </div>
+        <header>
+            <section class="header">
+                <a class="join-logo-header" href="../pages/board.html">
+                    <img src="../assets/icons/join-logo-dark.svg" alt="Join Logo" />
+                </a>
+                <span>Kanban Project Management Tool</span>
+                <div class="right-side-header">
+                    <div>
+                        <img class="ask-btn" src="../assets/icons/ask-btn-no-hover.svg" alt="ask Button" />
+                    </div>
+                    <button onclick="showSubmenu()" id="profileBtn" class="profile-button"></button>
+                </div>
+            </section>
+        </header>
+        <main>
+            <div id="add-task-main">
+                <div class="add-task-sticky-headline-container">
+                    <h1>Add Task</h1>
+                </div>
+                <div class="create-task-container">
+                    <form id="create-task-form" onsubmit="createTask(event)">
+                        <div id="inner-form-container">
+                            <div class="form-input-wrapper">
+                                <div class="add-task-attribute-container">
+                                    <label for="task-title">Title<span class="require-asterisk">*</span></label>
+                                    <input id="task-title" class="add-task-attribute-input grey-placeholder" type="text"
+                                        placeholder="Enter a title" onkeyup="resetNotFilledResponse(this)" />
+                                </div>
+                                <div class="add-task-attribute-container">
+                                    <label for="task-description">Description</label>
+                                    <textarea id="task-description" class="add-task-attribute-input grey-placeholder"
+                                        placeholder="Enter a Description"></textarea>
+                                </div>
+                                <div class="add-task-attribute-container">
+                                    <label for="task-contact-input">Assigned to</label>
+                                    <div id="add-task-contact-container" class="add-task-input-img-container button"
+                                        onclick="showContactList(event)">
+                                        <input type="text" id="task-contact-input"
+                                            class="add-task-attribute-input button"
+                                            placeholder="Select contacts to assign" oninput="filterInput(event)"
+                                            onclick="showContactList(event)" />
+                                        <img src="../assets/icons/arrow-drop-down.svg" alt="closed drop down logo"
+                                            id="add-task-contact-drop-down-icon" onclick="showContactList(event)" />
+                                        <div id="add-task-contact-list-container" class="d-none">
+                                            <ul id="add-task-contacts-list"></ul>
+                                        </div>
+                                    </div>
+                                    <div id="name-circle-container" class="d-none"></div>
+                                </div>
+                            </div>
+                            <div class="form-separator"></div>
+                            <div class="form-input-wrapper">
+                                <div class="add-task-attribute-container">
+                                    <label for="task-due-date">Due date<span class="require-asterisk">*</span></label>
+                                    <div id="add-task-date-container" class="add-task-input-img-container">
+                                        <input id="task-due-date" class="add-task-attribute-input grey-placeholder"
+                                            type="text" placeholder="dd/mm/yyyy" oninput="formatDateInput()"
+                                            onkeyup="resetNotFilledResponse(this)" />
+                                        <img src="../assets/icons/calender.svg" alt="calender icon"
+                                            onclick="openDatePicker(event)" />
+                                        <input type="date" id="hiddenDateInput" onchange="updateDateField()">
+                                    </div>
+                                </div>
+                                <div class="add-task-attribute-container">
+                                    <span>Prio</span>
+                                    <div id="prio-container">
+                                        <div id="prio-urgent-btn" class="prio-btn" onclick="setUrgentPrio()">
+                                            <span>Urgent</span><img src="../assets/icons/prio-alta-red.svg" alt="" />
+                                        </div>
+                                        <div id="prio-medium-btn" class="prio-btn" onclick="setMediumPrio()">
+                                            <span>Medium</span><img src="../assets/icons/prio-media-orange.svg"
+                                                alt="" />
+                                        </div>
+                                        <div id="prio-low-btn" class="prio-btn" onclick="setLowPrio()">
+                                            <span>Low</span><img src="../assets/icons/prio-baja-green.svg" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add-task-attribute-container">
+                                    <label for="task-category-select">Category<span
+                                            class="require-asterisk">*</span></label>
+                                    <select id="task-category-select" class="add-task-attribute-input"
+                                        onchange="resetNotFilledResponse(this)">
+                                        <option value="" disabled selected>
+                                            Select task category
+                                        </option>
+                                        <option value="userStory">User Story</option>
+                                        <option value="technicalTask">Technical Task</option>
+                                    </select>
+                                </div>
+                                <div class="add-task-attribute-container">
+                                    <label for="subtask-title">Subtasks</label>
+                                    <div id="sub-task-input-container" class="add-task-input-img-container">
+                                        <input id="subtask-title" class="add-task-attribute-input grey-placeholder"
+                                            type="text" placeholder="Add new Subtask" oninput="showAndHideIcons()" />
+                                        <img id="sub-task-icon-plus" src="../assets/icons/plus-subtask.svg"
+                                            alt="plus-icon" />
+                                        <img id="sub-task-icon-cross" src="../assets/icons/subtask-cross.svg"
+                                            alt="cross icon" onclick="clearSubtaskInputField()" class="d-none" /><img
+                                            id="sub-task-icon-vector" src="../assets/icons/subtask-vektor.svg"
+                                            alt="vector icon" class="d-none" /><img id="sub-task-icon-check"
+                                            src="../assets/icons/subtask-check.svg" alt="checked icon"
+                                            onclick="addSubTask()" class="d-none" />
+                                    </div>
+                                    <div id="subtask-list-container">
+                                        <ul id="subtask-list"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="check-password-style" id="sticky-bottom-container">
+                            <div class="requirementInfo">
+                                <div id="require-info-container">
+                                    <span class="require-asterisk">*</span>
+                                    <p>This field is required</p>
+                                </div>
+                                <div class="input-feedback-container" id="input-feedback-container"></div>
+                            </div>
+                            <div class="add-task-attribute-container">
+                                <div id="add-task-btn-container">
+                                    <button id="add-task-clear-btn" class="add-task-btn"
+                                        onclick="clearAllInputAddTask(event)">
+                                        Clear
+                                        <img src="../assets/icons/close-black.svg" alt="" />
+                                    </button>
+                                    <button type="submit" id="create-task-btn" class="add-task-btn">
+                                        Create Task
+                                        <img src="../assets/icons/check.svg" alt="" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </section>
+    <div class="nav-bar-main-container">
+        <div class="nav-bar-wrapper">
+            <div class="join-logo-nav-bar">
+                <a href="../pages/summary.html"><img src="../assets/icons/join-logo-white.svg" alt=""></a>
+            </div>
+            <div class="nav-bar">
+                <a href="../pages/summary.html" id="nav-bar-container-summary" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-1" src="../assets/icons/summary.svg" alt="" />
+                        <span>Summary</span>
+                    </div>
+                </a>
+                <a href="../pages/board.html" id="nav-bar-container-board" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-2" src="../assets/icons/board.svg" alt="" />
+                        <span>Board</span>
+                    </div>
+                </a>
+                <a href="../pages/add-task.html" id="nav-bar-container-add-to-task"
+                    class="nav-bar-container current-site">
+                    <div>
+                        <img id="nav-bar-img-3" src="../assets/icons/add-to-task.svg" alt="" />
+                        <span>Add Task</span>
+                    </div>
+                </a>
+                <a href="../pages/contactlist.html" id="nav-bar-container-contacts" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-4" src="../assets/icons/contacts.svg" alt="" />
+                        <span>Contacts</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="legal-container-nav-bar">
+            <a href="../pages/privacy-policy.html">Privacy Policy</a>
+            <a href="../pages/impressum.html">Legal notice</a>
+        </div>
+    </div>
+</body>
+
+</html>

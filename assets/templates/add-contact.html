@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Add Contact</title>
+    <link rel="shortcut icon" href="../assets/icons/join-logo-white.svg" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/standart.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/style.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/add-contact-style.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/big-popup.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/single-contact-view.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/submenu-popup.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/contactlist.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="../styles/nav-bar.css" />
+    <script src="../scripts/standart.js" defer></script>
+    <script src="../scripts/firebase.js" defer></script>
+    <script src="../scripts/main.js" defer></script>
+    <script src="../scripts/contact_list.js" defer></script>
+    <script src="../scripts/add_contact_template.js" defer></script>
+</head>
+
+<body id="add-contact-body" onload="onlyLoadIfUserOrGuest()">
+    <div class="add-contact-container">
+        <div class="close-container">
+            <img src="../assets/icons/cross-white.svg" alt="" />
+        </div>
+        <div class="add-contact-head">
+            <h1>Add Contact</h1>
+            <span class="border-bottom">Tasks are better with a team!</span>
+        </div>
+    </div>
+    <div class="placeholder-container">
+        <div id="add-contact-placeholder" class="d-none">
+            <p id="add-contact-initials-paragraph"></p>
+        </div>
+        <img id="add-contact-placeholder-img" src="../assets/icons/contact-placeholder.svg" alt="" />
+    </div>
+    <form onsubmit="createContact(event)">
+        <div class="create-contact-container">
+            <div class="input-container">
+                <input id="add-contact-name-input-field" type="text" placeholder="Name" onblur="fillPlaceholderBubble()"
+                    required />
+                <img src="../assets/icons/contact-person.svg" alt="User Icon" class="input-icon" />
+            </div>
+            <div class="input-container">
+                <input id="add-contact-email-input-field" type="email" placeholder="Email" required />
+                <img src="../assets/icons/mail-icon.svg" alt="Mail Icon" class="input-icon" />
+            </div>
+            <div class="input-container">
+                <input id="add-contact-phone-input-field" type="tel" placeholder="Phone" required />
+                <img src="../assets/icons/phone-icon.svg" alt="Phone Icon" class="input-icon" />
+            </div>
+        </div>
+        <div class="button-container">
+            <button type="submit" class="create-contact-button">
+                Create contact<img src="../assets/icons/check.svg" alt="" />
+            </button>
+        </div>
+    </form>
+</body>
+
+</html>

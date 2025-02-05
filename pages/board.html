@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join</title>
+    <link rel="shortcut icon" href="../assets/icons/join-logo-white.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="../styles/board.css" />
+    <link rel="stylesheet" href="../styles/standart.css" />
+    <link rel="stylesheet" href="../styles/header-board.css" />
+    <link rel="stylesheet" href="../styles/nav-bar-for-board.css" />
+    <link rel="stylesheet" href="../styles/card.css" />
+    <link rel="stylesheet" href="../styles/submenu-popup.css" />
+    <link rel="stylesheet" href="../styles/task-overlay.css" />
+    <link rel="stylesheet" href="../styles/single-contact-view.css" />
+    <link rel="stylesheet" href="../styles/edit-contact-style.css" />
+    <link rel="stylesheet" href="../styles/add-contact-style.css" />
+    <link rel="stylesheet" href="../styles/contactlist.css" />
+    <link rel="stylesheet" href="../styles/add-task.css" />
+    <script src="../scripts/main.js" defer></script>
+    <script src="../scripts/board_task_template.js" defer></script>
+    <script src="../scripts/firebase.js" defer></script>
+    <script src="../scripts/task_search.js" defer></script>
+    <script src="../scripts/login.js" defer></script>
+    <script src="../scripts/standart.js" defer></script>
+    <script src="../scripts/contact_list.js" defer></script>
+    <script src="../scripts/board.js" defer></script>
+    <script src="../scripts/board_template.js" defer></script>
+    <script src="../scripts/scroll_functionality.js" defer></script>
+    <script src="../scripts/add_task.js" defer></script>
+    <script src="../scripts/add_task_helper_functions.js" defer></script>
+    <script src="../scripts/edit_task.js" defer></script>
+    <script src="../scripts/add_task_template.js" defer></script>
+</head>
+
+<body onload="loadUserInitials(); getAllTasksUsersAndContactsFromSessionStorage()">
+    <section class="main-container">
+        <div id="window-overlay" class="d-none window-overlay"></div>
+        <div id="submenu" class="submenu-popup-container d-none">
+            <div class="submenu-text-container">
+                <a href="../pages/help.html">Help</a>
+                <a href="../pages/impressum.html">Legal Notice</a>
+                <a href="../pages/privacy-policy.html">Privacy Policy</a>
+                <a href="../pages/index.html">Log Out</a>
+            </div>
+        </div>
+        <header>
+            <section class="header">
+                <a class="join-logo-header" href="../pages/board.html">
+                    <img src="../assets/icons/join-logo-dark.svg" alt="Join Logo" />
+                </a>
+                <span>Kanban Project Management Tool</span>
+                <div class="right-side-header-board">
+                    <div>
+                        <a class="help-a-tag" href="../pages/help.html"><img class="ask-btn-board"
+                                src="../assets/icons/ask-btn-no-hover.svg" alt="ask Button" />
+                        </a>
+                    </div>
+                    <button onclick="showSubmenu()" id="profileBtn" class="profile-button"></button>
+                </div>
+            </section>
+        </header>
+        <main id="board-main">
+            <div class="board-header">
+                <section class="section-one">
+                    <div>
+                        <h1>Board</h1>
+                    </div>
+                    <div class="add-task-btn-mobile">
+                        <img onclick="addNewTask('')" src="../assets/icons/plus-add-task.svg" alt="Add Task" />
+                    </div>
+                </section>
+                <section class="section-two">
+                    <div class="user-input-section">
+                        <input onkeyup="checkUserSearchInputAndRedirect()" oninput="searchTask(event)"
+                            id="user-search-input" class="user-input-field" type="text" placeholder="Find Task" />
+                        <button>
+                            <img class="search-btn" src="../assets/icons/search.svg" alt="Search" />
+                        </button>
+                    </div>
+                    <div class="add-task-dasktop-edit-main-container" onclick="addNewTask('')">
+                        <div class="add-task-dasktop-edit-container-content">
+                            <span>Add task</span>
+                        </div>
+                        <div>
+                            <img class="add-button" src="../assets/icons/add-button.svg" alt="Add task Button " />
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="search-task-result-main-container" id="search-task-result-main-container"></div>
+            <div id="board-content-container" class="board-content">
+                <section class="section-three">
+                    <div class="board-prio-headline-div">
+                        <h2>To do</h2>
+                        <div class="category-add-task-btn" onclick="addNewTask('toDo')">
+                            <img src="../assets/icons/plus-button-no-hover.svg" alt="Add Task Button" />
+                        </div>
+                    </div>
+                    <div class="board-progress-state-wrapper" id="board-to-do-section-wrapper"
+                        ondrop="moveTaskToState('toDo'); removeHighlight('board-to-do-section-wrapper')"
+                        ondragover="allowDrop(event); highlight('board-to-do-section-wrapper')"
+                        ondragleave="removeHighlight('board-to-do-section-wrapper')">
+                        <div id="todo" class="progress-content">
+                            <span>No tasks To do</span>
+                        </div>
+                        <div id="board-to-do-section" class="board-progress-state"></div>
+                    </div>
+                </section>
+                <section class="section-four">
+                    <div class="board-prio-headline-div">
+                        <h2>In progress</h2>
+                        <div class="category-add-task-btn" onclick="addNewTask('inProgress')">
+                            <img src="../assets/icons/plus-button-no-hover.svg" alt="Add Task Button" />
+                        </div>
+                    </div>
+                    <div class="board-progress-state-wrapper" id="board-in-progress-section-wrapper"
+                        ondrop="moveTaskToState('inProgress'); removeHighlight('board-in-progress-section-wrapper')"
+                        ondragover="allowDrop(event); highlight('board-in-progress-section-wrapper')"
+                        ondragleave="removeHighlight('board-in-progress-section-wrapper')">
+                        <div id="inProgress" class="progress-content">
+                            <span>No tasks in progress</span>
+                        </div>
+                        <div class="board-progress-state" id="board-in-progress-section"></div>
+                    </div>
+                </section>
+                <section class="section-five">
+                    <div class="board-prio-headline-div">
+                        <h2>Await feedback</h2>
+                        <div class="category-add-task-btn" onclick="addNewTask('awaitFeedback')">
+                            <img src="../assets/icons/plus-button-no-hover.svg" alt="Add Task Button" />
+                        </div>
+                    </div>
+                    <div class="board-progress-state-wrapper" id="board-await-feedback-section-wrapper"
+                        ondrop="moveTaskToState('awaitFeedback'); removeHighlight('board-await-feedback-section-wrapper')"
+                        ondragover="allowDrop(event); highlight('board-await-feedback-section-wrapper')"
+                        ondragleave="removeHighlight('board-await-feedback-section-wrapper')">
+                        <div id="awaitingFeedback" class="progress-content">
+                            <span>No tasks awaiting Feedback</span>
+                        </div>
+                        <div id="board-await-feedback-section" class="board-progress-state"></div>
+                    </div>
+                </section>
+                <section class="section-six">
+                    <div class="board-prio-headline-div">
+                        <h2>Done</h2>
+                    </div>
+                    <div class="board-progress-state-wrapper" id="board-done-section-wrapper"
+                        ondrop="moveTaskToState('done'); removeHighlight('board-done-section-wrapper')"
+                        ondragover="allowDrop(event); highlight('board-done-section-wrapper')"
+                        ondragleave="removeHighlight('board-done-section-wrapper')">
+                        <div id="done" class="progress-content">
+                            <span>No tasks Done</span>
+                        </div>
+                        <div id="board-done-section" class="board-progress-state"></div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </section>
+    <div class="nav-bar-main-container">
+        <div class="nav-bar-wrapper">
+            <div class="join-logo-nav-bar">
+                <a href="../pages/summary.html"><img src="../assets/icons/join-logo-white.svg" alt="" /></a>
+            </div>
+            <div class="nav-bar">
+                <a href="../pages/summary.html" id="nav-bar-container-summary" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-1" src="../assets/icons/summary.svg" alt="" />
+                        <span>Summary</span>
+                    </div>
+                </a>
+                <a href="../pages/board.html" id="nav-bar-container-board" class="nav-bar-container current-site">
+                    <div>
+                        <img id="nav-bar-img-2" src="../assets/icons/board.svg" alt="" />
+                        <span>Board</span>
+                    </div>
+                </a>
+                <a href="../pages/add-task.html" id="nav-bar-container-add-to-task" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-3" src="../assets/icons/add-to-task.svg" alt="" />
+                        <span>Add Task</span>
+                    </div>
+                </a>
+                <a href="../pages/contactlist.html" id="nav-bar-container-contacts" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-4" src="../assets/icons/contacts.svg" alt="" />
+                        <span>Contacts</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="legal-container-nav-bar">
+            <a href="../pages/privacy-policy.html">Privacy Policy</a>
+            <a href="../pages/impressum.html">Legal notice</a>
+        </div>
+    </div>
+</body>
+
+</html>

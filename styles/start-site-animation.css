@@ -1,0 +1,134 @@
+.start-site-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(42, 54, 71, 1);
+    animation: bgr-transform 0.5s linear 0.5s forwards;
+}
+
+@keyframes bgr-transform {
+    0% {
+        background: rgba(42, 54, 71, 1);
+    }
+    100% {
+        background: none;
+    }
+}
+
+.start-site-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(42, 54, 71, 1);
+    z-index: 1000;
+    animation: bgr-transform-overlay 0.5s linear 0.5s forwards;
+}
+
+@keyframes bgr-transform-overlay {
+    0% {
+        background-color: rgba(42, 54, 71, 1);
+    }
+    100% {
+        background-color: rgba(246, 247, 248, 1);
+        opacity: 0;
+        z-index: 0;
+    }
+}
+
+.animation-img-container {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    max-width: 1920px;
+}
+
+#join-logo-white,
+#join-logo-dark {
+    width: 100.03px;
+    height: 121.97px;
+    position: absolute;
+    z-index: 9999;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-delay: 0.5s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: both;
+    padding: 10px 0 0 10px;
+    margin: 20px 0 0 20px;
+}
+
+#join-logo-white {
+    animation-name: slide-img1;
+}
+
+#join-logo-dark {
+    animation-name: slide-img2;
+}
+
+@keyframes slide-img1 {
+    0% {
+        opacity: 1;
+        transform: translate(calc(50vw - 70px), calc(50vh - 80px));
+        width: 100.03px;
+        height: 121.97px;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(0, 0);
+        width: 64px;
+        height: 78.03px;
+    }
+}
+
+@keyframes slide-img2 {
+    0% {
+        opacity: 0;
+        transform: translate(calc(50vw - 70px), calc(50vh - 80px));
+        width: 100.03px;
+        height: 121.97px;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+        width: 64px;
+        height: 78.03px;
+    }
+}
+
+@media (min-width: 1920px) {
+    @keyframes slide-img1 {
+        0% {
+            transform: translate(calc(960px - 70px), calc(50vh - 80px));
+        }
+
+        100% {
+            transform: translate(0, 0);
+        }
+    }
+
+    @keyframes slide-img2 {
+        0% {
+            transform: translate(calc(960px - 70px), calc(50vh - 80px));
+        }
+
+        100% {
+            transform: translate(0, 0);
+        }
+    }
+}
+
+@media (max-width:376px){
+   #join-logo-dark{
+        margin-top: 6px;
+   }
+}

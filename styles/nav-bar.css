@@ -1,0 +1,237 @@
+body {
+    margin: 0;
+    padding: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-bar-container {
+    cursor: pointer;
+}
+
+.join-logo-nav-bar {
+    display: none;
+}
+
+.nav-bar-main-container {
+    width: 100%;
+    height: 80px;
+    background-color: rgb(42, 54, 71);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+
+.nav-bar-wrapper {
+    flex: 1;
+}
+
+.nav-bar {
+    display: flex;
+    flex: 1;
+    justify-content: space-around;
+    gap: 10px;
+    margin: 0 10px 0 10px;
+}
+
+.login-navbar-style {
+    font-size: 16px;
+    color: white;
+    margin: 16px;
+}
+
+.nav-bar a {
+    text-decoration: none;
+    flex: 1;
+    height: 76px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: rgb(240, 240, 240);
+    transition: background-color 0.2s ease;
+    border-radius: 16px;
+}
+
+.nav-bar-container div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.nav-bar-container img {
+    width: 24px;
+    height: 24px;
+}
+
+.nav-bar-container span {
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.current-site {
+    border-radius: 16px;
+    background-color: #091931 !important;
+    color: rgb(255, 255, 255) !important;
+}
+
+.legal-main-container-desktop-nav-bar {
+    width: 232px;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    padding-top: 243px;
+    margin-bottom: 64px;
+}
+
+.legal-container-desktop-nav-bar a {
+    color: rgba(168, 168, 168, 1);
+    height: 35px;
+}
+
+.legal-container-desktop-nav-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#nav-bar-container-summary:hover {
+    #nav-bar-img-1 {
+        content: url(../assets/icons/summary-white.svg);
+        width: 25px;
+        height: 25px;
+    }
+}
+
+#nav-bar-container-board:hover {
+    #nav-bar-img-2 {
+        content: url(../assets/icons/board-white.svg);
+        width: 25px;
+        height: 25px;
+    }
+}
+
+#nav-bar-container-add-to-task:hover {
+    #nav-bar-img-3 {
+        content: url(../assets/icons/add-to-task-white.svg);
+        width: 25px;
+        height: 25px;
+    }
+}
+
+#nav-bar-container-contacts:hover {
+    #nav-bar-img-4 {
+        content: url(../assets/icons/contacts-white.svg);
+        width: 25px;
+        height: 25px;
+    }
+}
+
+.legal-container-nav-bar {
+    display: none;
+}
+
+@media (min-width: 920px) {
+    body {
+        flex-direction: row-reverse;
+    }
+
+    .login-navbar-style {
+        font-size: 24px;
+    }
+
+    .nav-bar-main-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: #293647;
+        width: 232px;
+        min-width: 232px;
+        height: 100vh;
+        gap: 115px;
+    }
+
+    .nav-bar-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 140px;
+        flex: none;
+        width: 100%;
+    }
+
+    .join-logo-nav-bar {
+        display: block;
+        margin-top: 64px;
+        align-self: center;
+    }
+
+    .nav-bar {
+        height: 229px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        width: 100%;
+        margin: 0;
+    }
+
+    .nav-bar a {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        height: 46px;
+        border-radius: 0;
+        color: rgb(205, 205, 205);
+        &:hover {
+            background-color: #2a3d59;
+            color: white;
+            border-radius: 0;
+        }
+    }
+
+    .nav-bar-container div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 0 52px;
+        height: 46px;
+    }
+
+    .nav-bar-container span {
+        font-size: 16px !important;
+        font-weight: 400;
+    }
+
+    .nav-bar-container img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .legal-container-nav-bar {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        flex: 1;
+        max-height: 320px;
+        margin-bottom: 64px;
+        width: 100%;
+    }
+
+    .legal-container-nav-bar a {
+        color: #a8a8a8;
+        padding-left: 52px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        &:hover {
+            font-weight: 600;
+            color: var(--identity);
+        }
+    }
+
+    .current-site {
+        border-radius: 0;
+    }
+}

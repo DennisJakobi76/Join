@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../assets/icons/join-logo-white.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/standart.css">
+    <link rel="stylesheet" href="../styles/signup-style.css">
+    <link rel="stylesheet" href="../styles/big-popup.css">
+    <script src="../scripts/standart.js" defer></script>
+    <script src="../scripts/login.js" defer></script>
+    <script src="../scripts/register.js" defer></script>
+    <script src="../scripts/firebase.js" defer></script>
+    <script src="../scripts/form_validation.js" defer></script>
+    <title>Sign Up</title>
+</head>
+
+<body>
+    <header>
+        <img class="join-logo" src="../assets/icons/join-logo-dark.svg" alt="" />
+    </header>
+    <main>
+        <div class="signup-main-container">
+            <div class="head-container">
+                <button onclick="getBackToPreviousSite()">
+                    <img src="../assets/icons/blue-arrow-left.svg" alt="" />
+                </button>
+                <h1 class="border-bottom">Sign Up</h1>
+            </div>
+            <form onsubmit="processSignUp(); return false;">
+                <div class="input-main">
+                    <div class="input-container">
+                        <input id="username" type="text" placeholder="Name" onkeyup="resetNotFilledResponse(this)" />
+                        <img src="../assets/icons/contact-person.svg" alt="User Icon" class="input-icon" />
+                    </div>
+                    <div class="input-container">
+                        <input id="email" type="text" placeholder="Email" onkeyup="resetNotFilledResponse(this)"
+                            onfocusout="checkValidation('email', 'email')" />
+                        <img src="../assets/icons/mail-icon.svg" alt="User Icon" class="input-icon" />
+                    </div>
+                    <div class="input-container">
+                        <input id="password" type="password" placeholder="Password"
+                            onkeyup="resetNotFilledResponse(this); visualizeIfPasswordsMatch(); togglePasswordVisibilityIcon(this, 'first')" />
+                        <img src="../assets/icons/lock.svg" alt="User Icon" class="input-icon"
+                            id="password-lock-first" />
+                        <img src="../assets/icons/visibility_off.svg" alt="User Icon"
+                            class="input-icon d-none visibility-icon" id="password-visibility-first"
+                            onclick="changePasswordVisibility('password', this)" />
+                    </div>
+                    <div class="input-container">
+                        <input id="confirmPassword" type="password" placeholder="Confirm Password"
+                            onkeyup="resetNotFilledResponse(this); visualizeIfPasswordsMatch(); togglePasswordVisibilityIcon(this, 'second')" />
+                        <img src="../assets/icons/lock.svg" alt="User Icon" class="input-icon"
+                            id="password-lock-second" />
+                        <img src="../assets/icons/visibility_off.svg" alt="User Icon"
+                            class="input-icon d-none visibility-icon" id="password-visibility-second"
+                            onclick="changePasswordVisibility('confirmPassword', this)" />
+                    </div>
+                    <div class="check-password-style" id="input-feedback-container"></div>
+                </div>
+                <div class=" check-privacy-container">
+                    <input id="privacyCheckbox" type="checkbox" onclick="toggleSignUpButton()" />
+                    <label for="privacyCheckbox"></label>
+                    <span style="color: #a8a8a8">I accept the
+                        <a class="privacy-link" href="../pages/privacy-policy.html">Privacy policy</a></span>
+                </div>
+                <div class="login-options-container">
+                    <button id="submitBtn" class="login-button" disabled>
+                        Sign up
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <div id="register-popup" class="big-popup-container d-none">
+        <div class="big-popup">
+            <span>You Signed Up successfully</span>
+        </div>
+    </div>
+    <footer>
+        <div class="legal-container"><a href="../pages/privacy-policy.html">Privacy Policy</a><a
+                href="../pages/impressum.html">Legal notice</a></div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+p {
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table tr td:first-child {
+    width: 56px;
+    vertical-align: top;
+}
+
+table tr td {
+    vertical-align: top;
+    padding: 8px;
+}
+
+td h3 {
+    font-size: 27px;
+    font-weight: 700;
+}
+
+.help-headline {
+    font-size: 20px;
+    font-weight: 700;
+}

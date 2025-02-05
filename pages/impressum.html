@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="../assets/icons/join-logo-white.svg" type="image/x-icon">
+    <link rel="stylesheet" href="../styles/standart.css">
+    <link rel="stylesheet" href="../styles/nav-bar.css">
+    <link rel="stylesheet" href="../styles/legal.css">
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/submenu-popup.css" />
+    <script src="../scripts/standart.js" defer></script>
+    <script src="../scripts/login.js" defer></script>
+    <script src="../scripts/contact_list.js" defer></script>
+    <title>Legal Notice</title>
+</head>
+
+<body onload="loadPrivacyAndLegalUserInitials()">
+    <section class="main-container">
+        <div id="submenu" class="submenu-popup-container d-none">
+            <div class="submenu-text-container">
+                <a href="../pages/help.html">Help</a>
+                <a href="../pages/impressum.html">Legal Notice</a>
+                <a href="../pages/privacy-policy.html">Privacy Policy</a>
+                <a onclick="userLogout()" href="../pages/index.html">Log Out</a>
+            </div>
+        </div>
+        <header>
+            <section class="header">
+                <a class="join-logo-header" href="../pages/board.html">
+                    <img src="../assets/icons/join-logo-dark.svg" alt="Join Logo" />
+                </a>
+                <span>Kanban Project Management Tool</span>
+                <div class="right-side-header">
+                    <div>
+                        <a class="help-a-tag" href="../pages/help.html"><img class="ask-btn"
+                                src="../assets/icons/ask-btn-no-hover.svg" alt="ask Button" />
+                        </a>
+                    </div>
+                    <button onclick="showSubmenu()" id="profileBtn" class="profile-button"></button>
+                </div>
+            </section>
+        </header>
+        <main>
+            <div class="privacy-policy-container">
+                <div class="headline-and-arrow-container">
+                    <h1>Legal Notice</h1>
+                    <div class="arrow-position">
+                        <img src="../assets/icons/blue-arrow-left.svg" alt="arrow-left icon"
+                            onclick="getBackToPreviousSite()" />
+                    </div>
+                </div>
+                <div class="legal-info-container">
+                    <h2>Imprint</h2>
+                    <p>Dennis Jakobi</p>
+                    <p>Bastian Abel</p>
+                    <p>Leon Dorsch</p>
+                    <p>Timo Kosfeld</p>
+                </div>
+                <p>
+                    Dennis Jakobi<br />
+                    Gartenstraße 90<br />45699 Herten
+                </p>
+                <div class="legal-info-container">
+                    <p>
+                        Phone: +4917687903079<br />
+                        E-Mail: <a href="mailto:dennis.jakobi76@gmail.com">dennis.jakobi76@gmail.com</a><br />
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>Acceptance of terms</h3>
+                    <p>
+                        Welcome to <span class="highlight">Join</span>! By accessing or using the <span
+                            class="highlight">Join</span> app (the
+                        "App"), you agree to the following terms and conditions (the "Terms"). Please read them
+                        carefully before proceeding. If
+                        you do not agree to these Terms, you must not use the App.
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>Ownership and Operator</h3>
+                    <p>
+                        The <span class="highlight">Join</span> app is owned and operated by
+                        <span class="highlight">Developer Akademie GmbH</span>, located at Tassiloplatz 25, 81541
+                        Munich, Germany ("we," "us," or
+                        "our").
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>Use of the App</h3>
+                    <p>
+                        The App is intended for personal and non-commercial use only. By using the App, you confirm that
+                        you are at least 18 years
+                        old or have reached the age of majority in your jurisdiction. You agree to use the App in
+                        compliance with applicable laws
+                        and regulations.
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>User Account</h3>
+                    <p>
+                        To access certain features of the App, you may be required to create an account. You are
+                        responsible for maintaining the
+                        confidentiality of your account credentials and for all activities that occur under your
+                        account. Please notify us
+                        immediately of any unauthorized use of your account.
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>Privacy Policy</h3>
+                    <p>
+                        Your use of the App is also governed by our Privacy Policy, which explains how we collect, use,
+                        and protect your personal
+                        information. By using the App, you consent to the practices described in the Privacy Policy.
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>Intellectual Property</h3>
+                    <p>
+                        All content, features, and functionality of the App, including but not limited to text,
+                        graphics, logos, and software, are
+                        the property of Developer Akademie GmbH or its licensors and are protected by intellectual
+                        property laws. You may not
+                        copy, modify, distribute, or create derivative works based on the App or its content without our
+                        prior written consent.
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>Limitation of Liability</h3>
+                    <p>
+                        To the extent permitted by law, Developer Akademie GmbH shall not be liable for any direct,
+                        indirect, incidental,
+                        consequential, or punitive damages arising out of your use or inability to use the App. Your
+                        sole remedy for
+                        dissatisfaction with the App is to stop using it.
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>Termination</h3>
+                    <p>
+                        We reserve the right to suspend or terminate your access to the App at any time, without notice,
+                        if you violate these
+                        Terms or for any other reason at our sole discretion.
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>Changes to the Terms</h3>
+                    <p>
+                        We may update these Terms from time to time. Any changes will be posted within the App, and your
+                        continued use of the App
+                        after such changes are posted constitutes your acceptance of the revised Terms.
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>Governing Law</h3>
+                    <p>
+                        These Terms shall be governed by and construed in accordance with the laws of Germany. Any
+                        disputes arising under these
+                        Terms shall be subject to the exclusive jurisdiction of the courts in Munich, Germany.
+                    </p>
+                </div>
+                <div class="legal-info-container">
+                    <h3>Contact Information</h3>
+                    <p>
+                        If you have any questions or concerns about these Terms, please contact us at:
+                        <span class="highlight">Developer Akademie GmbH</span> Tassiloplatz 25 81541 Munich Germany
+                        Email:
+                        support@developerakademie.com
+                    </p>
+                </div>
+                <p>
+                    By using the <span class="highlight">Join</span> app, you acknowledge that you have read,
+                    understood, and agree to be bound by
+                    these Terms.
+                </p>
+            </div>
+        </main>
+    </section>
+    <div id="privacy-navbar" class="nav-bar-main-container">
+        <div class="nav-bar-wrapper">
+            <div class="join-logo-nav-bar">
+                <a href="../pages/summary.html"><img src="../assets/icons/join-logo-white.svg" alt="" /></a>
+            </div>
+            <div class="nav-bar">
+                <a href="../pages/summary.html" id="nav-bar-container-summary" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-1" src="../assets/icons/summary.svg" alt="" />
+                        <span>Summary</span>
+                    </div>
+                </a>
+                <a href="../pages/board.html" id="nav-bar-container-board" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-2" src="../assets/icons/board.svg" alt="" />
+                        <span>Board</span>
+                    </div>
+                </a>
+                <a href="../pages/add-task.html" id="nav-bar-container-add-to-task" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-3" src="../assets/icons/add-to-task.svg" alt="" />
+                        <span>Add Task</span>
+                    </div>
+                </a>
+                <a href="../pages/contactlist.html" id="nav-bar-container-contacts" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-4" src="../assets/icons/contacts.svg" alt="" />
+                        <span>Contacts</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="legal-container-nav-bar">
+            <a href="../pages/privacy-policy.html">Privacy Policy</a>
+            <a href="../pages/impressum.html" class="current-site">Legal notice</a>
+        </div>
+    </div>
+</body>
+
+</html>

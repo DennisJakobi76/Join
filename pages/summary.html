@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Join</title>
+    <link rel="shortcut icon" href="../assets/icons/join-logo-white.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="../styles/nav-bar.css" />
+    <link rel="stylesheet" href="../styles/standart.css" />
+    <link rel="stylesheet" href="../styles/style.css" />
+    <link rel="stylesheet" href="../styles/summary-page.css" />
+    <link rel="stylesheet" href="../styles/submenu-popup.css" />
+    <link rel="stylesheet" href="../styles/greeting.css">
+    <link rel="stylesheet" href="../styles/header-board.css">
+    <script src="../scripts/firebase.js" defer></script>
+    <script src="../scripts/standart.js" defer></script>
+    <script src="../scripts/main.js" defer></script>
+    <script src="../scripts/summary.js" defer></script>
+    <script src="../scripts/contact_list.js" defer></script>
+    <script src="../scripts/login.js" defer></script>
+
+</head>
+
+<body onload="initSummary()">
+    <section class="main-container">
+        <div id="submenu" class="submenu-popup-container d-none">
+            <div class="submenu-text-container">
+                <a href="../pages/help.html">Help</a>
+                <a href="../pages/impressum.html">Legal Notice</a>
+                <a href="../pages/privacy-policy.html">Privacy Policy</a>
+                <a onclick="userLogout()" href="../pages/index.html">Log Out</a>
+            </div>
+        </div>
+        <header>
+            <section class="header">
+                <a class="join-logo-header" href="">
+                    <img src="../assets/icons/join-logo-dark.svg" alt="Join Logo" />
+                </a>
+                <span>Kanban Project Management Tool</span>
+                <div class="right-side-header">
+                    <div>
+                        <a class="help-a-tag" href="../pages/help.html"><img class="ask-btn-board"
+                                src="../assets/icons/ask-btn-no-hover.svg" alt="ask Button" />
+                        </a>
+                    </div>
+                    <button onclick="showSubmenu()" id="profileBtn" class="profile-button"></button>
+                </div>
+            </section>
+        </header>
+        <main class="summary-main-container">
+            <div class="greeting-container" id="animation-greeting-container">
+                <div>
+                    <span id="animation-greeting"></span>
+                    <h1 id="animation-userName"></h1>
+                </div>
+            </div>
+            <div id="summary-info-and-greeting-container">
+                <div id="summary-info-container">
+                    <div class="join-headline-main-container">
+                        <div class="join-headline">
+                            <div>
+                                <h2 id="summary-join-headline">Join 360</h2>
+                            </div>
+                            <div id="summary-headline-seperator"></div>
+                            <div id="summary-headline-span-container">
+                                <span id="headline-span">Key Metrics at a Glance</span>
+                            </div>
+                        </div>
+                        <div id="summary-head-underline" class="head-blue-underline"></div>
+                    </div>
+                    <div class="task-management-area">
+                        <div class="task-main-overview">
+                            <a href="board.html#todo-section" class="to-do-container">
+                                <div>
+                                    <img id="to-do-img-hover" src="../assets/icons/pencil-rectangle.svg" alt="" />
+                                </div>
+                                <div>
+                                    <div class="to-do-number-container">
+                                        <span id="to-do-counter-span" class="to-do-number">1</span>
+                                    </div>
+                                    <div><span>To-do</span></div>
+                                </div>
+                            </a>
+                            <a href="board.html#done-section" class="done-container">
+                                <div>
+                                    <img id="done-img-hover" src="../assets/icons/check-rectangle.svg" alt="" />
+                                </div>
+                                <div>
+                                    <div class="done-number-container">
+                                        <span id="done-counter-span" class="done-number">1</span>
+                                    </div>
+                                    <div><span>Done</span></div>
+                                </div>
+                            </a>
+                        </div>
+                        <a href="board.html#done-section" class="important-reminder-main-container">
+                            <div class="urgent-task-container">
+                                <div class="urgent-task-img">
+                                    <img src="../assets/icons/urgency-summary.svg" alt="" />
+                                </div>
+                                <div>
+                                    <div class="urgent-task-number-container">
+                                        <span id="urgent-counter-span" class="urgent-task-number">1</span>
+                                    </div>
+                                    <div><span>Urgent</span></div>
+                                </div>
+                            </div>
+                            <div class="dividing-line"></div>
+                            <div class="urgent-deadline">
+                                <div>
+                                    <h3 id="due-time-field">October 16, 2022</h3>
+                                </div>
+                                <div><span>Upcoming Deadline</span></div>
+                            </div>
+                        </a>
+                        <div class="task-overview">
+                            <a href="../pages/board.html" class="task-in-board-container">
+                                <div id="task-in-board-counter-div" class="number">5</div>
+                                <div class="title">
+                                    <span>Task In<br />Board</span>
+                                </div>
+                            </a>
+                            <a href="board.html#inprogress-section" class="task-in-progress-container">
+                                <div id="task-in-progress-counter-div" class="number">2</div>
+                                <div class="title">
+                                    <span>Task In<br />Progress</span>
+                                </div>
+                            </a>
+                            <a href="board.html#awaitfeedback-section" class="awaiting-feedback-container">
+                                <div id="awaiting-feedback-counter-div" class="number">2</div>
+                                <div class="title"><span>Awaiting feedback</span></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div id="summary-greeting-container">
+                    <span id="summary-greeting"></span>
+                    <h1 id="summary-user-name"></h1>
+                </div>
+            </div>
+        </main>
+    </section>
+    <div class="nav-bar-main-container">
+        <div class="nav-bar-wrapper">
+            <div class="join-logo-nav-bar">
+                <a href="../pages/summary.html"><img src="../assets/icons/join-logo-white.svg" alt="" /></a>
+            </div>
+            <div class="nav-bar">
+                <a href="../pages/summary.html" id="nav-bar-container-summary" class="nav-bar-container current-site">
+                    <div>
+                        <img id="nav-bar-img-1" src="../assets/icons/summary.svg" alt="" />
+                        <span>Summary</span>
+                    </div>
+                </a>
+                <a href="../pages/board.html" id="nav-bar-container-board" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-2" src="../assets/icons/board.svg" alt="" />
+                        <span>Board</span>
+                    </div>
+                </a>
+                <a href="../pages/add-task.html" id="nav-bar-container-add-to-task" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-3" src="../assets/icons/add-to-task.svg" alt="" />
+                        <span>Add Task</span>
+                    </div>
+                </a>
+                <a href="../pages/contactlist.html" id="nav-bar-container-contacts" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-4" src="../assets/icons/contacts.svg" alt="" />
+                        <span>Contacts</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="legal-container-nav-bar">
+            <a href="../pages/privacy-policy.html">Privacy Policy</a>
+            <a href="../pages/impressum.html">Legal notice</a>
+        </div>
+    </div>
+</body>
+
+</html>

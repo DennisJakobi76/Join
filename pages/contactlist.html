@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts</title>
+    <link rel="icon" href="../assets/icons/join-logo-white.svg" />
+    <link rel="stylesheet" href="../styles/nav-bar.css" />
+    <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/standart.css">
+    <link rel="stylesheet" href="../styles/contactlist.css">
+    <link rel="stylesheet" href="../styles/submenu-popup.css" />
+    <link rel="stylesheet" href="../styles/big-popup.css" />
+    <link rel="stylesheet" href="../styles/single-contact-view.css" />
+    <link rel="stylesheet" href="../styles/edit-contact-style.css" />
+    <link rel="stylesheet" href="../styles/add-contact-style.css" />
+    <link rel="stylesheet" href="../styles/add-contact-style.css" />
+    <script src="../scripts/standart.js" defer></script>
+    <script src="../scripts/form_validation.js" defer></script>
+    <script src="../scripts/firebase.js" defer></script>
+    <script src="../scripts/main.js" defer></script>
+    <script src="../scripts/contact_list.js" defer></script>
+    <script src="../scripts/contact_list_template.js" defer></script>
+    <script src="../scripts/add_contact.js" defer></script>
+    <script src="../scripts/login.js" defer></script>
+    <script src="../scripts/add_contact_template.js" defer></script>
+</head>
+
+<body onload="initializeContactsList()">
+    <section class="main-container">
+        <div id="window-overlay" class="d-none window-overlay"></div>
+        <div id="submenu" class="submenu-popup-container d-none">
+            <div class="submenu-text-container">
+                <a href="../pages/help.html">Help</a>
+                <a href="../pages/impressum.html">Legal Notice</a>
+                <a href="../pages/privacy-policy.html">Privacy Policy</a>
+                <a href="../pages/index.html">Log Out</a>
+            </div>
+        </div>
+        <div id="add-contact-success-div" class="big-popup-container d-none">
+            <div class="big-popup">
+                <span>Contact successfully created</span>
+            </div>
+        </div>
+        <header>
+            <section class="header">
+                <a class="join-logo-header" href="../pages/board.html">
+                    <img src="../assets/icons/join-logo-dark.svg" alt="Join Logo" />
+                </a>
+                <span>Kanban Project Management Tool</span>
+                <div class="right-side-header">
+                    <div>
+                        <a class="help-a-tag" href="../pages/help.html"><img class="ask-btn"
+                                src="../assets/icons/ask-btn-no-hover.svg" alt="ask Button" />
+                        </a>
+                    </div>
+                    <button onclick="showSubmenu()" id="profileBtn" class="profile-button"></button>
+                </div>
+            </section>
+        </header>
+        <main id="main-content">
+            <div class="contact-view-wrapper">
+                <section id="contact-list-container" class="contactlist-container">
+                    <div onclick="openAddContactView()" class="options-icon-container-big">
+                        <span class="add-contact-text-big">Add new contact</span>
+                        <img class="add-contact-img-big" src="../assets/icons/add-contact.svg" alt="" />
+                    </div>
+                </section>
+                <div class="single-contact-view-container single-contact-view-mobile" id="single-contact-view"></div>
+            </div>
+            <div id="add-contact-button" onclick="openAddContactView()" class="options-icon-container">
+                <img class="add-contact-img" src="../assets/icons/add-contact.svg" alt="" />
+            </div>
+        </main>
+    </section>
+    <div class="nav-bar-main-container">
+        <div class="nav-bar-wrapper">
+            <div class="join-logo-nav-bar">
+                <a href="../pages/summary.html"><img src="../assets/icons/join-logo-white.svg" alt=""></a>
+            </div>
+            <div class="nav-bar">
+                <a href="../pages/summary.html" id="nav-bar-container-summary" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-1" src="../assets/icons/summary.svg" alt="" />
+                        <span>Summary</span>
+                    </div>
+                </a>
+                <a href="../pages/board.html" id="nav-bar-container-board" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-2" src="../assets/icons/board.svg" alt="" />
+                        <span>Board</span>
+                    </div>
+                </a>
+                <a href="../pages/add-task.html" id="nav-bar-container-add-to-task" class="nav-bar-container">
+                    <div>
+                        <img id="nav-bar-img-3" src="../assets/icons/add-to-task.svg" alt="" />
+                        <span>Add Task</span>
+                    </div>
+                </a>
+                <a href="../pages/contactlist.html" id="nav-bar-container-contacts"
+                    class="nav-bar-container current-site">
+                    <div>
+                        <img id="nav-bar-img-4" src="../assets/icons/contacts.svg" alt="" />
+                        <span>Contacts</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="legal-container-nav-bar">
+            <a href="../pages/privacy-policy.html">Privacy Policy</a>
+            <a href="../pages/impressum.html">Legal notice</a>
+        </div>
+    </div>
+</body>
+
+</html>

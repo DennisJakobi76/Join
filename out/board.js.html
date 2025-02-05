@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: board.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="..//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+    <div id="main">
+
+        <h1 class="page-title">Source: board.js</h1>
+
+
+
+
+
+
+        <section>
+            <article>
+                <pre class="prettyprint source linenums"><code>let allTasks = [];
+let allTaskUsers = [];
+
+/**
+ * Function to show the detailed view of a task
+ * @param {string} taskId
+ * @param {integer} j
+ * @param {string} taskDate
+ * @param {string} taskPriority
+ * @param {string} priorityImage
+ * @param {string} assignedUsers
+ * @param {string} subtasks
+ * @param {string} cardTypeColor
+ */
+function taskBigView(taskId, j, taskDate, taskPriority, priorityImage, assignedUsers, subtasks, cardTypeColor) {
+    document.getElementById("window-overlay").classList.remove("d-none");
+    if (subtasks !== "undefined") {
+        const decodedSubtasks = JSON.parse(decodeURIComponent(subtasks));
+        getSmallCardInfo(taskId, j, taskDate, taskPriority, priorityImage, assignedUsers, cardTypeColor, decodedSubtasks);
+    } else {
+        getSmallCardInfo(taskId, j, taskDate, taskPriority, priorityImage, assignedUsers, cardTypeColor);
+    }
+}
+
+/**
+ * Function to collect informations of a task from a small card on board
+ */
+function getSmallCardInfo(taskId, j, taskDate, taskPriority, priorityImage, assignedUsers, cardTypeColor, decodedSubtasks) {
+    let taskTitle = document.getElementById(`task-title${j}`).innerHTML;
+    let taskDescription = document.getElementById(`task-description${j}`).innerHTML;
+    let taskType = document.getElementById(`task-type${j}`).innerHTML;
+
+    setInfoToBigCard(taskId, taskTitle, taskDescription, taskDate, taskType, taskPriority, priorityImage, assignedUsers, cardTypeColor, decodedSubtasks);
+}
+
+/**
+ * Function to transfer collected informations of a task to the detailed view of that task
+ * @param {string} taskId
+ * @param {string} taskTitle
+ * @param {string} taskDescription
+ * @param {string} taskDate
+ * @param {string} taskType
+ * @param {string} taskPriority
+ * @param {string} priorityImage
+ * @param {string} assignedUsers
+ * @param {string} cardTypeColor
+ * @param {string} decodedSubtasks
+ */
+function setInfoToBigCard(taskId, taskTitle, taskDescription, taskDate, taskType, taskPriority, priorityImage, assignedUsers, cardTypeColor, decodedSubtasks) {
+    document.getElementById("board-main").innerHTML += renderTaskBigView(taskId, taskTitle, taskDescription, taskDate, taskType, taskPriority, priorityImage, cardTypeColor, assignedUsers);
+    getEmployeeInfo(assignedUsers);
+    getSubtaskInfo(decodedSubtasks, taskId);
+}
+
+/**
+ * Function to get needed informations of an array of contacts assigned to a task and to render their initial-circles
+ * in their correct colors
+ * @param {array} assignedUsers
+ */
+function getEmployeeInfo(assignedUsers) {
+    if (typeof assignedUsers === "string") {
+        assignedUsers = assignedUsers.split(",");
+    }
+    for (let index = 0; index &lt; assignedUsers.length; index++) {
+        let bgColor = getRandomColor();
+        document.getElementById("assignedContacts").innerHTML += `
+        &lt;div class="contact">
+            &lt;div class="contact-info">
+                &lt;div style="background-color: ${bgColor}" class="contact-img">${getEmployeesInitials(assignedUsers[index])}&lt;/div>&lt;span>${assignedUsers[index]}&lt;/span>
+            &lt;/div>
+        &lt;/div>
+        `;
+    }
+}
+
+/**
+ * Function to get subtask-texts and to render them in the detailed view of a task
+ * @param {array} subtasks
+ * @param {string} taskId
+ */
+async function getSubtaskInfo(subtasks, taskId) {
+    if (subtasks === undefined) {
+        document.getElementById("subtaskContainer").innerHTML = "Keine Subtasks";
+    } else {
+        for (let i = 0; i &lt; subtasks.length; i++) {
+            document.getElementById("subtaskContainer").innerHTML += `
+            &lt;div class="subtask-element-container">
+                &lt;input id="privacyCheckbox${i}" type="checkbox" onchange="changeStateofCheckbox(${i}, '${taskId}')" required>
+                &lt;label id="checkboxLabel${i}" for="privacyCheckbox${i}">&lt;/label>
+                &lt;span>${subtasks[i].description}&lt;/span>
+            &lt;/div>
+        `;
+            await getCheckboxBg(taskId, i);
+        }
+    }
+}
+
+/**
+ * Function to set the background-image for a subtask based on its state of being checked or not
+ * @param {string} taskId
+ * @param {integer} i
+ */
+async function getCheckboxBg(taskId, i) {
+    let subtaskResponse = await loadData((path = `${PATH_TO_TASKS}${taskId}/subtasks/${i}/checked`));
+    if (subtaskResponse === true) {
+        document.getElementById(`checkboxLabel${i}`).style.background = 'url("../assets/icons/checkbox-checked.svg")';
+    } else if (subtaskResponse === false) {
+        document.getElementById(`checkboxLabel${i}`).style.background = 'url("../assets/icons/checkbox-not-checked.svg")';
+    }
+}
+
+/**
+ * Function to change the background-image of a checkbox based on its state of being checked or not
+ * @param {integer} i
+ * @param {string} taskId
+ */
+function changeStateofCheckbox(i, taskId) {
+    let isChecked = document.getElementById(`privacyCheckbox${i}`).checked;
+    if (isChecked) {
+        updateData((path = PATH_TO_TASKS), (id = `${taskId}/subtasks/${i}`), (data = { "checked": true }));
+        document.getElementById(`checkboxLabel${i}`).style.background = 'url("../assets/icons/checkbox-checked.svg") no-repeat';
+    } else {
+        updateData((path = PATH_TO_TASKS), (id = `${taskId}/subtasks/${i}`), (data = { "checked": false }));
+        document.getElementById(`checkboxLabel${i}`).style.background = 'url("../assets/icons/checkbox-not-checked.svg") no-repeat';
+    }
+}
+
+/**
+ * Function to save contact objects that are checked as assigned contacts to an array
+ * @param {string} taskId 
+ */
+function loadCardContactsInArray(taskId) {
+    let currentTask = getTaskFromArrayById(allTasks, taskId);
+    helperArray = currentTask.assignedTo;
+    editCheckedContactNamesAndColors = editFilteredNamesAndColors.filter((contact) => helperArray.includes(contact.name));
+}
+
+/**
+ * Function to open the detailed view to edit a task
+ * @param {string} taskTitle
+ * @param {string} taskDescription
+ * @param {string} taskDate
+ * @param {string} taskPriority
+ * @param {string} assignedUsers
+ * @param {string} taskId
+ * @param {string} decodedSubtasksForEditTaskBigView 
+ */
+function openEditTaskBigView(taskTitle, taskDescription, taskDate, taskPriority, assignedUsers, taskId, decodedSubtasksForEditTaskBigView) {
+    document.getElementById("window-overlay").classList.remove("d-none");
+    document.getElementById("task-big-container").outerHTML = "";
+    document.getElementById("board-main").innerHTML += renderEditTaskBigView(taskId, taskTitle, taskDescription, taskDate);
+    document.getElementById("edit-task-title").value = taskTitle;
+    document.getElementById("edit-task-description").value = taskDescription;
+    document.getElementById("edit-task-due-date").value = taskDate;
+    editTaskGetEmployeeInfo(assignedUsers);
+    loadRightPriorityColor(taskPriority);
+    editGetSubtaskInfo(decodedSubtasksForEditTaskBigView, taskId);
+    loadCardContactsInArray(taskId);
+    editGetAllContactsNames();
+}
+
+/**
+ * Function to set the correct background-color to a priority-button in the detailed view to edit a task
+ * @param {string} taskPriority
+ */
+function loadRightPriorityColor(taskPriority) {
+    if (taskPriority == "urgent") {
+        document.getElementById("edit-prio-urgent-btn").classList.add("active-urgent");
+    } else if (taskPriority == "medium") {
+        document.getElementById("edit-prio-medium-btn").classList.add("active-medium");
+    } else if (taskPriority == "low") {
+        document.getElementById("edit-prio-low-btn").classList.add("active-low");
+    }
+}
+
+/**
+ * Function to close the detailed view of a task
+ */
+function closeTaskBigView() {
+    document.getElementById("window-overlay").classList.add("d-none");
+    document.getElementById("profileBtn").style.backgroundColor = "white";
+    document.getElementById("task-big-container").outerHTML = "";
+}
+
+/**
+ * Function to close the detailed view of a task to edit
+ */
+function closeEditTaskBigView() {
+    document.getElementById("window-overlay").classList.add("d-none");
+    document.getElementById("profileBtn").style.backgroundColor = "white";
+    document.getElementById("edit-task-big-container").outerHTML = "";
+    navigateToBoard();
+}
+
+/**
+ * Function to let the detailed view of a task to edit slide out of the screen in 300ms
+ */
+function editTaskSlideOut() {
+    document.getElementById("edit-task-big-container").classList.add("slide-out-task-big");
+    setTimeout(() => {
+        closeEditTaskBigView();
+    }, 300);
+}
+
+/**
+ * Function to let the detailed view of a task slide out of the screen in 300ms
+ */
+function bigTaskSlideOut() {
+    document.getElementById("task-big-container").classList.add("slide-out-task-big");
+    setTimeout(() => {
+        closeTaskBigView();
+    }, 300);
+}
+
+/**
+ * Function to add an eventlistener to container of the detailed view of a task so it can be slided out of the screen
+ */
+document.addEventListener("mouseup", function (e) {
+    let bigTaskDiv = document.getElementById("task-big-container");
+    if (bigTaskDiv &amp;&amp; !bigTaskDiv.contains(e.target)) {
+        bigTaskDiv.classList.add("slide-out-task-big");
+        setTimeout(() => {
+            closeTaskBigView();
+        }, 300);
+    }
+});
+
+/**
+ * Function to set the displayed view to the board
+ */
+function navigateToBoard() {
+    window.location.href = "board.html";
+}
+
+/**
+ * Function to transfer the state of a new task based on the column of the board where it should be created in
+ * @param {string} state
+ */
+function addNewTask(state) {
+    window.location.href = `add-task.html?state=${state}`;
+}
+
+/**
+ * Function to delete a task from the firebase database and to update the session storage
+ * @param {string} taskId
+ */
+async function deleteTask(taskId) {
+    await deleteData((path = PATH_TO_TASKS), (id = taskId));
+    await setBackendJsonToSessionStorage();
+    navigateToBoard();
+}
+
+/**
+ * Function to get all task-objects and user-objects from the session storage and to store them in arrays and to
+ * add task-info-cards to the board
+ */
+function getAllTasksUsersAndContactsFromSessionStorage() {
+    let sessionResponse = sessionStorage.getItem("joinJson");
+    let sessionResponseJson = JSON.parse(sessionResponse);
+    let tasks = sessionResponseJson["tasks"];
+    allTasks = getArrayFromObject(tasks);
+    let users = sessionResponseJson["users"];
+    allTaskUsers = getArrayFromObject(users);
+    writeCardsToBoardSectionsFromArray(allTasks);
+}
+
+/**
+ * Function to write all task-cards to the board based on the informations stored in an array
+ * @param {array} array
+ */
+// prettier-ignore
+function writeCardsToBoardSectionsFromArray(array) {
+    for (let j = 0; j &lt; array.length; j++) {
+        let renderValuesObject = getObjectWithValuesNeededInBoardCard(array[j]);
+        if (array[j].state === "toDo") {
+            hideElementAndRenderAnother("todo", "board-to-do-section", renderValuesObject.task, renderValuesObject.subtaskState, renderValuesObject.prioImg, renderValuesObject.employeesName, progressBarCalc, renderValuesObject.color, j)
+        } else if (array[j].state === "inProgress") {
+            hideElementAndRenderAnother("inProgress", "board-in-progress-section", renderValuesObject.task, renderValuesObject.subtaskState, renderValuesObject.prioImg, renderValuesObject.employeesName, progressBarCalc, renderValuesObject.color, j);
+        } else if (array[j].state === "awaitFeedback") {
+            hideElementAndRenderAnother("awaitingFeedback", "board-await-feedback-section", renderValuesObject.task, renderValuesObject.subtaskState, renderValuesObject.prioImg, renderValuesObject.employeesName, progressBarCalc, renderValuesObject.color, j);
+        } else if (array[j].state === "done") {
+            hideElementAndRenderAnother("done", "board-done-section", renderValuesObject.task, renderValuesObject.subtaskState, renderValuesObject.prioImg, renderValuesObject.employeesName, progressBarCalc, renderValuesObject.color, j);
+        }
+    }
+}
+
+/**
+ * Function to collect informations of a task in an object that provides the informations needed to render a task-card
+ * @param {object} task
+ * @returns object with needed values
+ */
+function getObjectWithValuesNeededInBoardCard(task) {
+    return {
+        task: task,
+        subtaskState: getSubtaskStatus(task.subtasks),
+        prioImg: getPriorityImage(task.priority),
+        employeesName: createUserContainer(task.assignedTo),
+        color: changeColorCardType(task.type),
+    };
+}
+
+/**
+ * Function to hide an element and to render another element in the same position with needed values to render a task-card
+ * @param {HTML-element} elementToHide
+ * @param {HTML-element} parentToRenderCardsIn
+ * @param {string} renderParam_1
+ * @param {string} renderParam_2
+ * @param {string} renderParam_3
+ * @param {string} renderParam_4
+ * @param {string} renderParam_5
+ * @param {string} renderParam_6
+ * @param {integer} j
+ */
+function hideElementAndRenderAnother(elementToHide, parentToRenderCardsIn, renderParam_1, renderParam_2, renderParam_3, renderParam_4, renderParam_5, renderParam_6, j) {
+    document.getElementById(elementToHide).classList.add("d-none");
+    document.getElementById(parentToRenderCardsIn).innerHTML += taskCardTemplateToHtml(renderParam_1, renderParam_2, renderParam_3, renderParam_4, renderParam_5, renderParam_6, j);
+}
+
+/**
+ * Function to prevent the default behavior of an event in the drag-and-drop-functionality
+ * @param {event} event
+ */
+function allowDrop(event) {
+    event.preventDefault();
+}
+
+/**
+ * Function to update the state of a task in the firebase database and in the session storage and to update the board
+ * @param {string} newState
+ */
+async function moveTaskToState(newState) {
+    currentDraggedTask.state = newState;
+    await updateData(PATH_TO_TASKS, currentDraggedTask.id, (data = currentDraggedTask));
+    await updateSessionStorage();
+    clearBoard();
+    getAllTasksUsersAndContactsFromSessionStorage();
+    checkSectionForChildNodes();
+}
+
+/**
+ * Function to get the task-object and the task-card from the board based on the id of the task at the start of dragging
+ * @param {event} event
+ * @param {string} taskId
+ */
+function startDragging(event, taskId) {
+    currentDraggedTask = allTasks.find((task) => task.id == taskId);
+    draggedElement = event.target;
+}
+
+/**
+ * Function to handle the drop of a task-card in the actual state of the board and to initialize the update of the task in the database
+ * @param {event} event
+ * @param {string} taskId
+ */
+function handleDropdownChange(event, taskId) {
+    currentDraggedTask = allTasks.find((task) => task.id === taskId);
+    const value = event.target.value;
+    if (value) {
+        moveTaskToState(value);
+    }
+}
+
+/**
+ * Function to update the informations stored in the session storge after updating the firebase database
+ */
+async function updateSessionStorage() {
+    let response = await fetch(BASE_URL + ".json");
+    let fetchedData = await response.json();
+    sessionStorage.setItem("joinJson", JSON.stringify(fetchedData));
+}
+
+/**
+ * Function to clear the board from all task-cards
+ */
+function clearBoard() {
+    let boardSections = document.getElementsByClassName("board-progress-state");
+    for (let i = 0; i &lt; boardSections.length; i++) {
+        boardSections[i].innerHTML = "";
+    }
+}
+
+/**
+ * Function to check if a section of the board has child-nodes and to show the information
+ * to the user if there is no card in a board-section
+ */
+function checkSectionForChildNodes() {
+    let boardSections = document.getElementsByClassName("board-progress-state");
+    for (let i = 0; i &lt; boardSections.length; i++) {
+        if (boardSections[i].children.length == 0) {
+            if (i == 0) {
+                document.getElementById("todo").classList.remove("d-none");
+            } else if (i == 1) {
+                document.getElementById("inProgress").classList.remove("d-none");
+            } else if (i == 2) {
+                document.getElementById("awaitingFeedback").classList.remove("d-none");
+            } else if (i == 3) {
+                document.getElementById("done").classList.remove("d-none");
+            }
+        }
+    }
+}
+
+/**
+ * Function to add a css-class to a board-section to give the user a feedback that a task can be dropped in this section
+ * @param {string} id
+ */
+function highlight(id) {
+    document.getElementById(id).classList.add("highlight-drag-area");
+}
+
+/**
+ * Function to remove a css-class from a board-section to give the user a feedback that a task can be dropped in this section
+ * @param {string} id
+ */
+function removeHighlight(id) {
+    document.getElementById(id).classList.remove("highlight-drag-area");
+}
+</code></pre>
+            </article>
+        </section>
+
+
+
+
+    </div>
+
+    <nav>
+        <h2><a href="index.html">Home</a></h2>
+        <h3>Global</h3>
+        <ul>
+            <li><a href="global.html#AddContactViewSlideDown">AddContactViewSlideDown</a></li>
+            <li><a href="global.html#EditContactViewSlideDown">EditContactViewSlideDown</a></li>
+            <li><a href="global.html#PasswordFeedbackStyles">PasswordFeedbackStyles</a></li>
+            <li><a href="global.html#PasswordsMatch">PasswordsMatch</a></li>
+            <li><a href="global.html#addContactNamesToList">addContactNamesToList</a></li>
+            <li><a href="global.html#addNameCircles">addNameCircles</a></li>
+            <li><a href="global.html#addNewProfileToServer">addNewProfileToServer</a></li>
+            <li><a href="global.html#addNewTask">addNewTask</a></li>
+            <li><a href="global.html#addSubTask">addSubTask</a></li>
+            <li><a href="global.html#addTaskToAssignedContacts">addTaskToAssignedContacts</a></li>
+            <li><a href="global.html#addTaskToContactInAllContactsArray">addTaskToContactInAllContactsArray</a></li>
+            <li><a href="global.html#allowDrop">allowDrop</a></li>
+            <li><a href="global.html#autoLogin">autoLogin</a></li>
+            <li><a href="global.html#bigTaskSlideOut">bigTaskSlideOut</a></li>
+            <li><a href="global.html#capitalizeFirstLetter">capitalizeFirstLetter</a></li>
+            <li><a href="global.html#changeBgColorByUserIcons">changeBgColorByUserIcons</a></li>
+            <li><a href="global.html#changeColorCardType">changeColorCardType</a></li>
+            <li><a href="global.html#changePasswordVisibility">changePasswordVisibility</a></li>
+            <li><a href="global.html#changeStateofCheckbox">changeStateofCheckbox</a></li>
+            <li><a href="global.html#checkContact">checkContact</a></li>
+            <li><a href="global.html#checkForGuestLogin">checkForGuestLogin</a></li>
+            <li><a href="global.html#checkIfEmailExists">checkIfEmailExists</a></li>
+            <li><a href="global.html#checkIfFreshLogin">checkIfFreshLogin</a></li>
+            <li><a href="global.html#checkIfPasswordsMatch">checkIfPasswordsMatch</a></li>
+            <li><a href="global.html#checkIfUserExists">checkIfUserExists</a></li>
+            <li><a href="global.html#checkIfpasswordFieldsEmpty">checkIfpasswordFieldsEmpty</a></li>
+            <li><a href="global.html#checkSectionForChildNodes">checkSectionForChildNodes</a></li>
+            <li><a href="global.html#checkUserFolder">checkUserFolder</a></li>
+            <li><a href="global.html#checkUserSearchInputAndRedirect">checkUserSearchInputAndRedirect</a></li>
+            <li><a href="global.html#clearAllInput">clearAllInput</a></li>
+            <li><a href="global.html#clearAllInputAddTask">clearAllInputAddTask</a></li>
+            <li><a href="global.html#clearBoard">clearBoard</a></li>
+            <li><a href="global.html#clearSubtaskInputField">clearSubtaskInputField</a></li>
+            <li><a href="global.html#closeAddContactView">closeAddContactView</a></li>
+            <li><a href="global.html#closeEditContactView">closeEditContactView</a></li>
+            <li><a href="global.html#closeEditTaskBigView">closeEditTaskBigView</a></li>
+            <li><a href="global.html#closeTaskBigView">closeTaskBigView</a></li>
+            <li><a href="global.html#contactBigView">contactBigView</a></li>
+            <li><a href="global.html#createContact">createContact</a></li>
+            <li><a href="global.html#createTask">createTask</a></li>
+            <li><a href="global.html#createUserContainer">createUserContainer</a></li>
+            <li><a href="global.html#deleteContact">deleteContact</a></li>
+            <li><a href="global.html#deleteData">deleteData</a></li>
+            <li><a href="global.html#deleteSubtask">deleteSubtask</a></li>
+            <li><a href="global.html#deleteTask">deleteTask</a></li>
+            <li><a href="global.html#disableFreshLogin">disableFreshLogin</a></li>
+            <li><a href="global.html#editAddSubTask">editAddSubTask</a></li>
+            <li><a href="global.html#editBigView">editBigView</a></li>
+            <li><a href="global.html#editClearSubtaskInputField">editClearSubtaskInputField</a></li>
+            <li><a href="global.html#editContent">editContent</a></li>
+            <li><a href="global.html#editFilterInput">editFilterInput</a></li>
+            <li><a href="global.html#editFormatDateInput">editFormatDateInput</a></li>
+            <li><a href="global.html#editGetAllContactsNames">editGetAllContactsNames</a></li>
+            <li><a href="global.html#editGetSubtaskInfo">editGetSubtaskInfo</a></li>
+            <li><a href="global.html#editSetLowPrio">editSetLowPrio</a></li>
+            <li><a href="global.html#editSetMediumPrio">editSetMediumPrio</a></li>
+            <li><a href="global.html#editSetUrgentPrio">editSetUrgentPrio</a></li>
+            <li><a href="global.html#editShowAndHideIcons">editShowAndHideIcons</a></li>
+            <li><a href="global.html#editShowContactList">editShowContactList</a></li>
+            <li><a href="global.html#editTaskGetEmployeeInfo">editTaskGetEmployeeInfo</a></li>
+            <li><a href="global.html#editTaskSlideOut">editTaskSlideOut</a></li>
+            <li><a href="global.html#emailExists">emailExists</a></li>
+            <li><a href="global.html#enableGreetingAnimationOnFreshLogin">enableGreetingAnimationOnFreshLogin</a></li>
+            <li><a href="global.html#enableScrollByDragging">enableScrollByDragging</a></li>
+            <li><a href="global.html#fetchUsers">fetchUsers</a></li>
+            <li><a href="global.html#fillPlaceholderBubble">fillPlaceholderBubble</a></li>
+            <li><a href="global.html#filterInput">filterInput</a></li>
+            <li><a href="global.html#filterInputFromArray">filterInputFromArray</a></li>
+            <li><a href="global.html#findUserByKey">findUserByKey</a></li>
+            <li><a href="global.html#formatDateInput">formatDateInput</a></li>
+            <li><a href="global.html#getAllContactsNames">getAllContactsNames</a></li>
+            <li><a href="global.html#getAllTaskIdsOfUser">getAllTaskIdsOfUser</a></li>
+            <li><a
+                    href="global.html#getAllTasksUsersAndContactsFromSessionStorage">getAllTasksUsersAndContactsFromSessionStorage</a>
+            </li>
+            <li><a href="global.html#getAllTasksFromStoredObject">getAllTasksFromStoredObject</a></li>
+            <li><a href="global.html#getArrayFromObject">getArrayFromObject</a></li>
+            <li><a href="global.html#getBackToPreviousSite">getBackToPreviousSite</a></li>
+            <li><a href="global.html#getChangedTaskData">getChangedTaskData</a></li>
+            <li><a href="global.html#getCheckboxBg">getCheckboxBg</a></li>
+            <li><a href="global.html#getContactFromArrayById">getContactFromArrayById</a></li>
+            <li><a href="global.html#getContactInitials">getContactInitials</a></li>
+            <li><a href="global.html#getCountOfAwaitFeedback">getCountOfAwaitFeedback</a></li>
+            <li><a href="global.html#getCountOfDone">getCountOfDone</a></li>
+            <li><a href="global.html#getCountOfPrioUrgent">getCountOfPrioUrgent</a></li>
+            <li><a href="global.html#getCountOfTaskInBoard">getCountOfTaskInBoard</a></li>
+            <li><a href="global.html#getCountOfTasksInProgress">getCountOfTasksInProgress</a></li>
+            <li><a href="global.html#getCountOfToDo">getCountOfToDo</a></li>
+            <li><a href="global.html#getCountOfValuesInArray">getCountOfValuesInArray</a></li>
+            <li><a href="global.html#getDataFromSessionStorage">getDataFromSessionStorage</a></li>
+            <li><a href="global.html#getEditedUserData">getEditedUserData</a></li>
+            <li><a href="global.html#getEmployeeInfo">getEmployeeInfo</a></li>
+            <li><a href="global.html#getEmployeesInitials">getEmployeesInitials</a></li>
+            <li><a href="global.html#getGreetingText">getGreetingText</a></li>
+            <li><a href="global.html#getGreetingTextByTime">getGreetingTextByTime</a></li>
+            <li><a href="global.html#getIdOfNewContact">getIdOfNewContact</a></li>
+            <li><a href="global.html#getIdOfNewTask">getIdOfNewTask</a></li>
+            <li><a href="global.html#getJsonObjectFromSessionStorage">getJsonObjectFromSessionStorage</a></li>
+            <li><a href="global.html#getListSection">getListSection</a></li>
+            <li><a href="global.html#getObjectWithValuesNeededInBoardCard">getObjectWithValuesNeededInBoardCard</a></li>
+            <li><a href="global.html#getPasswordInput">getPasswordInput</a></li>
+            <li><a href="global.html#getPriorityImage">getPriorityImage</a></li>
+            <li><a href="global.html#getRandomColor">getRandomColor</a></li>
+            <li><a href="global.html#getSmallCardInfo">getSmallCardInfo</a></li>
+            <li><a href="global.html#getSubtaskInfo">getSubtaskInfo</a></li>
+            <li><a href="global.html#getSubtaskStatus">getSubtaskStatus</a></li>
+            <li><a href="global.html#getTaskFromArrayById">getTaskFromArrayById</a></li>
+            <li><a href="global.html#getUpcomingDeadline">getUpcomingDeadline</a></li>
+            <li><a href="global.html#getUserInitials">getUserInitials</a></li>
+            <li><a href="global.html#getUserNameFromLocalStorage">getUserNameFromLocalStorage</a></li>
+            <li><a href="global.html#handleDropdownChange">handleDropdownChange</a></li>
+            <li><a href="global.html#hideElementAndRenderAnother">hideElementAndRenderAnother</a></li>
+            <li><a href="global.html#highlight">highlight</a></li>
+            <li><a href="global.html#initSummary">initSummary</a></li>
+            <li><a href="global.html#initializeContactsList">initializeContactsList</a></li>
+            <li><a href="global.html#initiateLogin">initiateLogin</a></li>
+            <li><a href="global.html#isDateValid">isDateValid</a></li>
+            <li><a href="global.html#loadAllContacts">loadAllContacts</a></li>
+            <li><a href="global.html#loadCardContactsInArray">loadCardContactsInArray</a></li>
+            <li><a href="global.html#loadData">loadData</a></li>
+            <li><a href="global.html#loadRightPriorityColor">loadRightPriorityColor</a></li>
+            <li><a href="global.html#loadUserInitials">loadUserInitials</a></li>
+            <li><a href="global.html#moveTaskToState">moveTaskToState</a></li>
+            <li><a href="global.html#navigateToBoard">navigateToBoard</a></li>
+            <li><a href="global.html#navigateToContactList">navigateToContactList</a></li>
+            <li><a href="global.html#navigateToLogin">navigateToLogin</a></li>
+            <li><a href="global.html#navigateToSummary">navigateToSummary</a></li>
+            <li><a href="global.html#onlyLoadIfUserOrGuest">onlyLoadIfUserOrGuest</a></li>
+            <li><a href="global.html#openAddContactView">openAddContactView</a></li>
+            <li><a href="global.html#openEditTaskBigView">openEditTaskBigView</a></li>
+            <li><a href="global.html#postData">postData</a></li>
+            <li><a href="global.html#processSignUp">processSignUp</a></li>
+            <li><a href="global.html#rememberUser">rememberUser</a></li>
+            <li><a href="global.html#removeEditClass">removeEditClass</a></li>
+            <li><a href="global.html#removeFeedbackText">removeFeedbackText</a></li>
+            <li><a href="global.html#removeHighlight">removeHighlight</a></li>
+            <li><a href="global.html#removePasswordFeedbackStyle">removePasswordFeedbackStyle</a></li>
+            <li><a href="global.html#removeRotations">removeRotations</a></li>
+            <li><a href="global.html#removeTaskIdFromUncheckedContacts">removeTaskIdFromUncheckedContacts</a></li>
+            <li><a href="global.html#renderAddContactView">renderAddContactView</a></li>
+            <li><a href="global.html#renderAssignContact">renderAssignContact</a></li>
+            <li><a href="global.html#renderContactListContact">renderContactListContact</a></li>
+            <li><a href="global.html#renderContactSection">renderContactSection</a></li>
+            <li><a href="global.html#renderEditContactView">renderEditContactView</a></li>
+            <li><a href="global.html#renderEditTaskBigView">renderEditTaskBigView</a></li>
+            <li><a href="global.html#renderNameCircle">renderNameCircle</a></li>
+            <li><a href="global.html#renderNewContact">renderNewContact</a></li>
+            <li><a href="global.html#renderSearchResultCard">renderSearchResultCard</a></li>
+            <li><a href="global.html#renderSingleContactView">renderSingleContactView</a></li>
+            <li><a href="global.html#renderSubtask">renderSubtask</a></li>
+            <li><a href="global.html#renderTaskBigView">renderTaskBigView</a></li>
+            <li><a href="global.html#resetLoginWarning">resetLoginWarning</a></li>
+            <li><a href="global.html#rotate">rotate</a></li>
+            <li><a href="global.html#saveEditedUserData">saveEditedUserData</a></li>
+            <li><a href="global.html#scrollStep">scrollStep</a></li>
+            <li><a href="global.html#searchTask">searchTask</a></li>
+            <li><a href="global.html#setBackendJsonToSessionStorage">setBackendJsonToSessionStorage</a></li>
+            <li><a href="global.html#setChangedTaskDataToBackend">setChangedTaskDataToBackend</a></li>
+            <li><a href="global.html#setColorById">setColorById</a></li>
+            <li><a href="global.html#setContactAssignedToChecked">setContactAssignedToChecked</a></li>
+            <li><a href="global.html#setEmailExistsFeedback">setEmailExistsFeedback</a></li>
+            <li><a href="global.html#setGreetingInformations">setGreetingInformations</a></li>
+            <li><a href="global.html#setGreetingName">setGreetingName</a></li>
+            <li><a href="global.html#setGreetingTime">setGreetingTime</a></li>
+            <li><a href="global.html#setGuestToSessionStorage">setGuestToSessionStorage</a></li>
+            <li><a href="global.html#setInfoToBigCard">setInfoToBigCard</a></li>
+            <li><a href="global.html#setLoginInformationToSessionStorage">setLoginInformationToSessionStorage</a></li>
+            <li><a href="global.html#setLowPrio">setLowPrio</a></li>
+            <li><a href="global.html#setMediumPrio">setMediumPrio</a></li>
+            <li><a href="global.html#setNeededValues">setNeededValues</a></li>
+            <li><a href="global.html#setPasswordFeedbackStyle">setPasswordFeedbackStyle</a></li>
+            <li><a href="global.html#setUrgentPrio">setUrgentPrio</a></li>
+            <li><a href="global.html#showAndHideIcons">showAndHideIcons</a></li>
+            <li><a href="global.html#showContactList">showContactList</a></li>
+            <li><a href="global.html#showEditDeleteMenu">showEditDeleteMenu</a></li>
+            <li><a href="global.html#showSignUpPopUp">showSignUpPopUp</a></li>
+            <li><a href="global.html#showSubmenu">showSubmenu</a></li>
+            <li><a href="global.html#startDragging">startDragging</a></li>
+            <li><a href="global.html#startScrolling">startScrolling</a></li>
+            <li><a href="global.html#statusProgressBar">statusProgressBar</a></li>
+            <li><a href="global.html#stopEventBubbling">stopEventBubbling</a></li>
+            <li><a href="global.html#stopScrolling">stopScrolling</a></li>
+            <li><a href="global.html#taskBigView">taskBigView</a></li>
+            <li><a href="global.html#taskCardTemplateToHtml">taskCardTemplateToHtml</a></li>
+            <li><a href="global.html#toggleClassById">toggleClassById</a></li>
+            <li><a href="global.html#togglePasswordVisibilityIcon">togglePasswordVisibilityIcon</a></li>
+            <li><a href="global.html#updateData">updateData</a></li>
+            <li><a href="global.html#updateSessionStorage">updateSessionStorage</a></li>
+            <li><a href="global.html#userLogin">userLogin</a></li>
+            <li><a href="global.html#userLogout">userLogout</a></li>
+            <li><a href="global.html#visualizeIfPasswordsMatch">visualizeIfPasswordsMatch</a></li>
+            <li><a href="global.html#visualizeNoLoginMatch">visualizeNoLoginMatch</a></li>
+            <li><a href="global.html#writeCardsToBoardSectionsFromArray">writeCardsToBoardSectionsFromArray</a></li>
+            <li><a href="global.html#writeValuesToElements">writeValuesToElements</a></li>
+        </ul>
+    </nav>
+
+    <br class="clear">
+
+    <footer>
+        Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Tue Jan 28 2025 20:51:42
+        GMT+0100 (Mitteleuropäische Normalzeit)
+    </footer>
+
+    <script> prettyPrint(); </script>
+    <script src="scripts/linenumber.js"> </script>
+</body>
+
+</html>

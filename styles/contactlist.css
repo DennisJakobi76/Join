@@ -1,0 +1,148 @@
+* {
+    --contactlist-element-padding: 0 26px;
+    --contactlist-element-width: 100%;
+}
+
+.contactlist-container {
+    display: flex;
+    flex-direction: column;
+
+    padding: var(--contactlist-element-padding);
+    height: calc(100vh - 80px);
+    overflow-x: auto;
+    background-color: white;
+}
+
+.contactlist-category {
+    width: var(--contactlist-element-width);
+    height: 58px;
+    display: flex;
+    align-items: center;
+}
+
+.contactlist-category span {
+    font-size: 20px;
+    font-weight: 400;
+    margin-left: 36px;
+}
+
+.contactlist-contact {
+    width: var(--contactlist-element-width);
+    height: 78px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.contactlist-contact:hover {
+    background-color: var(--light-background);
+}
+
+.contactlist-contact-active {
+    background-color: var(--dark-background);
+    color: white;
+}
+
+.contactlist-contact .profile-picture {
+    height: 42px;
+    min-width: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--light-text-color);
+    font-size: 12px;
+    font-weight: 400;
+    margin-right: 35px;
+    margin-left: 24px;
+}
+
+.contactlist-name-and-email {
+    height: 42px;
+    display: flex;
+    flex-direction: column;
+}
+
+.contactlist-name-and-email span {
+    font-weight: 400;
+    font-size: 20px;
+    width: var(--contactlist-element-width);
+}
+
+.contactlist-name-and-email a {
+    text-decoration: none;
+    width: var(--contactlist-element-width);
+}
+
+.contactlist-separator {
+    width: var(--contactlist-element-width);
+    height: 1px;
+    background-color: rgb(212, 212, 212);
+    margin: 4px 0;
+}
+
+::-webkit-scrollbar {
+    height: 100%;
+    width: 3px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: gray;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: darkgray;
+}
+
+::-webkit-scrollbar-button {
+    display: none !important;
+}
+
+@media (min-width: 920px) {
+    .contact-view-wrapper {
+        display: flex;
+    }
+    .contactlist-container {
+        position: relative;
+        margin: 0px;
+        width: 456px;
+        box-shadow: 4px 0px 6px 0px #00000014;
+    }
+    .contactlist-category {
+        padding: 24px 0 0 0;
+    }
+    .contactlist-contact:hover {
+        background-color: var(--light-background);
+    }
+
+    .contactlist-contact-active {
+        background-color: var(--dark-background);
+        color: white;
+    }
+
+    .big-contact-container {
+        width: calc(100vw - 260px) !important;
+        height: 592px !important;
+        display: flex;
+    }
+
+    .add-contact-container {
+        height: 100% !important;
+        border-top-right-radius: 0px !important;
+    }
+    .add-contact-head {
+        padding-top: 142px !important;
+    }
+    .border-bottom::after {
+        rotate: 0deg !important;
+        left: 48px !important;
+        top: 64px !important;
+    }
+}
